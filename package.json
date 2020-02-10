@@ -25,6 +25,7 @@
     "expo-secure-store": "~8.0.0"
   },
   "devDependencies": {
+    "react-router-dom": "^5.1.2",
     "redux-logger": "^3.0.6"
   },
   "private": true

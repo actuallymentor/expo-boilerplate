@@ -7,7 +7,7 @@ import logger from 'redux-logger'
 
 // Redux persistance
 import { persistStore, persistReducer } from 'redux-persist'
-import createSecureStore from "redux-persist-expo-securestore"
+import storage from './storage'
 
 // Reducers
 const reducers = combineReducers( { 
@@ -29,7 +29,7 @@ const metaReducer = ( state, action ) => {
 }
 
 // Persisted reducer
-const persistedReducer = persistReducer( { key: 'root', storage: createSecureStore() }, metaReducer )
+const persistedReducer = persistReducer( { key: 'root', storage: storage }, metaReducer )
 
 // Middleware
 const middleware = process.env.NODE_ENV == 'development' ? applyMiddleware( logger, promise ) : applyMiddleware( promise )

@@ -7,12 +7,12 @@ import { store, persistor } from './src/redux/store'
 
 
 // Routing, using HashRouter instead of BrowserRouter tomake sure no server-side config is needed
-import { Router } from 'react-router-dom'
+import { NativeRouter } from 'react-router-native'
 import RouteMan from './src/routes/routes'
-import { createHashHistory } from 'history'
+
 
 // ///////////////////////////////
-// Main app ( web )
+// Main app ( native )
 // ///////////////////////////////
 export default function App() {
 
@@ -24,15 +24,13 @@ export default function App() {
 			{ /* Redux store persistence across reloads and visits */ }
 			<PersistGate loading={null} persistor={ persistor }>
 				{ /* Connect router */ }
-				<Router history={ createHashHistory() }>
+				<NativeRouter>
 					{ /* Load the Routes component, which renders the relevant screens at the relevant times */ }
 					<RouteMan />
-				</Router>
+				</NativeRouter>
 			</PersistGate>
 		</Provider>
 
 	)
 
 }
-
-

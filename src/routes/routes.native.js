@@ -4,7 +4,7 @@ import React from 'react'
 import { Component, Container } from '../components/stateless/generic'
 
 // Routing
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route } from 'react-router-native'
 
 // DEMO COMPONENT
 import { Text } from 'react-native'
