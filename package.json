@@ -1,0 +1,31 @@
+{
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "development=true expo start",
+    "android": "development=true expo start --android",
+    "ios": "development=true expo start --ios",
+    "web": "development=true expo start --web",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "@babel/core": "^7.0.0",
+    "babel-preset-expo": "~8.0.0",
+    "expo": "~36.0.0",
+    "history": "^4.10.1",
+    "react": "~16.9.0",
+    "react-dom": "~16.9.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
+    "react-native-web": "~0.11.7",
+    "react-redux": "^7.1.3",
+    "react-router-native": "^5.1.2",
+    "redux": "^4.0.5",
+    "redux-persist": "^6.0.0",
+    "redux-persist-expo-securestore": "^2.0.0",
+    "redux-promise-middleware": "^6.1.2",
+    "expo-secure-store": "~8.0.0"
+  },
+  "devDependencies": {
+    "redux-logger": "^3.0.6"
+  },
+  "private": true
+}
