@@ -1,3 +1,7 @@
+// Sentry debugging
+import './src/modules/sentry'
+
+// React
 import React from 'react'
 
 // Redux
@@ -6,10 +10,12 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { store, persistor } from './src/redux/store'
 
 
-// Routing, using HashRouter instead of BrowserRouter tomake sure no server-side config is needed
-import { Router } from 'react-router-dom'
-import RouteMan from './src/routes/routes'
-import { createHashHistory } from 'history'
+// Import router
+import Routes from './src/routes/routes'
+
+
+// Visual
+import { Loading } from './src/components/stateless/generic'
 
 // ///////////////////////////////
 // Main app ( web )
@@ -22,12 +28,9 @@ export default function App() {
 		// Connect redux store
 		<Provider store={ store }>
 			{ /* Redux store persistence across reloads and visits */ }
-			<PersistGate loading={null} persistor={ persistor }>
+			<PersistGate loading={ <Loading /> } persistor={ persistor }>
 				{ /* Connect router */ }
-				<Router history={ createHashHistory() }>
-					{ /* Load the Routes component, which renders the relevant screens at the relevant times */ }
-					<RouteMan />
-				</Router>
+				<Routes />
 			</PersistGate>
 		</Provider>
 
