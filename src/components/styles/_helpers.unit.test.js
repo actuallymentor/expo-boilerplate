@@ -2,49 +2,39 @@ import { color, fontSize, merge, StyleSheet } from './_helpers'
 
 describe( 'Style helpers and variables', () => {
 
-	it( 'Colors are al set', done => {
+	it( 'Colors are al set', () => {
 
 		const colors = Object.keys( color )
+		const mandatory = [ 'background', 'text', 'primary', 'accent', 'divider' ]
 
-		expect( colors ).toContain( 'background' )
-		expect( colors ).toContain( 'text' )
-		expect( colors ).toContain( 'primary' )
-		expect( colors ).toContain( 'accent' )
-		expect( colors ).toContain( 'divider' )
-
-		done()
+		expect( colors ).toEqual( expect.arrayContaining( mandatory ) )
 
 	} )
 
-	it( 'Font sizes are all set', done => {
+	it( 'Font sizes are all set', () => {
 
 		const sizes = Object.keys( fontSize )
+		const mandatory = [ 'h1', 'h2', 'h3', 'p' ]
 
-		expect( sizes ).toContain( 'h1' )
-		expect( sizes ).toContain( 'h2' )
-		expect( sizes ).toContain( 'h3' )
-		expect( sizes ).toContain( 'p' )
+		expect( sizes ).toEqual( expect.arrayContaining( mandatory ) )
 
-		done()
 
 	} )
 
-	it( 'Merge function exists', done => {
+	it( 'Merge function exists', () => {
 
 		expect( typeof merge ).toBe( 'function' )
 		
-		done()
 
 	} )
 
-	it( 'Style sheet exports', done => {
+	it( 'Style sheet exports', () => {
 
 		const funcs = Object.keys( StyleSheet )
+		const mandatory = [ 'flatten', 'hairlineWidth' ]
 
-		expect( funcs ).toContain( 'flatten' )
-		expect( funcs ).toContain( 'hairlineWidth' )
+		expect( funcs ).toEqual( expect.arrayContaining( mandatory ) )
 
-		done()
 	} )
 
 } )

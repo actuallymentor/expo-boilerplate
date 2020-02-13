@@ -2,26 +2,22 @@ import { store , persistor } from './store'
 
 describe( 'Store unit test', () => {
 
-	it( 'Store is valid and has persistor keys', done => {
+	it( 'Store is valid and has persistor keys', () => {
 
 		const emptyStore = store.getState()
 		const keys = Object.keys( emptyStore )
+		const mandatory = [ 'reducer', '_persist' ]
 
-		expect( keys ).toContain( 'reducer' )
-		expect( keys ).toContain( '_persist' )
-
-		done()
+		expect( keys ).toEqual( expect.arrayContaining( mandatory ) )
 
 	} )
 
-	it( 'Persistor is valid persistor', done => {
+	it( 'Persistor is valid persistor', () => {
 
 		const keys = Object.keys( persistor )
+		const mandatory = [ 'persist', 'purge' ]
 
-		expect( keys ).toContain( 'persist' )
-		expect( keys ).toContain( 'purge' )
-
-		done()
+		expect( keys ).toEqual( expect.arrayContaining( mandatory ) )
 
 	} )
 

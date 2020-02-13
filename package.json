@@ -9,13 +9,10 @@
     "test": "jest"
   },
   "jest": {
-    "preset": "jest-expo/universal",
+    "preset": "jest-expo",
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base)"
-    ],
-    "transform": {
-      "^.+\\.js$": "babel-preset-expo"
-    }
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|redux-persist-expo-securestore)"
+    ]
   },
   "dependencies": {
     "@babel/core": "^7.0.0",
@@ -41,6 +38,7 @@
     "jest": "^25.1.0",
     "jest-expo": "^36.0.1",
     "react-native-dotenv": "^0.2.0",
+    "react-test-renderer": "^16.12.0",
     "redux-logger": "^3.0.6"
   },
   "private": true
