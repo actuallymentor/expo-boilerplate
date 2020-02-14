@@ -10,7 +10,7 @@ import { Switch, Route, AppRouter } from './router'
 import { Container } from '../components/stateless/generic'
 import { Text } from 'react-native'
 const Home = f => <Container>
-	<Text>/ route</Text>
+	<Text>/ routes</Text>
 </Container>
 
 // Route maneger class

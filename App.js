@@ -1,5 +1,6 @@
-// Sentry debugging
+// Sentry debugging and Amplitude tracking
 import './src/modules/sentry'
+import './src/modules/amplitude'
 
 // React
 import React from 'react'
@@ -17,24 +18,37 @@ import Routes from './src/routes/routes'
 // Visual
 import { Loading } from './src/components/stateless/generic'
 
+// Rotation
+import { ScreenOrientation } from 'expo'
+
 // ///////////////////////////////
 // Main app ( web )
 // ///////////////////////////////
-export default function App() {
+export default class App extends React.Component {
 
-	// Return the router
-	return (
+	// Put upside down if developing
+	async componentDidMount() {
+		if( process.env.NODE_ENV == 'development' ) await ScreenOrientation.lockAsync( ScreenOrientation.Orientation.PORTRAIT_DOWN )
+		await ScreenOrientation.unlockAsync()
+	}
 
-		// Connect redux store
-		<Provider store={ store }>
-			{ /* Redux store persistence across reloads and visits */ }
-			<PersistGate loading={ <Loading /> } persistor={ persistor }>
-				{ /* Connect router */ }
-				<Routes />
-			</PersistGate>
-		</Provider>
 
-	)
+	// Return the app with routing
+	render( ) {
+
+		return (
+
+			// Connect redux store
+			<Provider store={ store }>
+				{ /* Redux store persistence across reloads and visits */ }
+				<PersistGate loading={ <Loading /> } persistor={ persistor }>
+					{ /* Connect router */ }
+					<Routes />
+				</PersistGate>
+			</Provider>
+
+		)
+	}
 
 }
 
