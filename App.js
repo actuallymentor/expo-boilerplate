@@ -21,15 +21,23 @@ import { Loading } from './src/components/stateless/generic'
 // Rotation
 import { ScreenOrientation } from 'expo'
 
+// Push notifications
+import { askForPushPermissions } from './src/modules/push'
+
 // ///////////////////////////////
 // Main app ( web )
 // ///////////////////////////////
 export default class App extends React.Component {
 
-	// Put upside down if developing
+	
 	async componentDidMount() {
+
+		// Put upside down if developing
 		if( process.env.NODE_ENV == 'development' ) await ScreenOrientation.lockAsync( ScreenOrientation.Orientation.PORTRAIT_DOWN )
 		await ScreenOrientation.unlockAsync()
+
+		// Create and store expo push token
+		await askForPushPermissions()
 	}
 
 

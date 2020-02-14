@@ -1,5 +1,11 @@
 # Expo boilerplate
 
+## To implement
+
+Based on your app you will have to edit:
+
+- `modules/push.js` to implement `savePushToken` based on your needs
+
 ## While developing
 
 In `App.js` you will find the `componentDidMount` function which makes the app go upside down when enabled (in case you have the demo phone plugged and rotated).
