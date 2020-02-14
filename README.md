@@ -1,5 +1,11 @@
 # Expo boilerplate
 
+Boilerplate is compatible with android, ios and web.
+
+Start with `npm run android/ios/web`.
+
+Testing: `npm test` based on Jest.
+
 ## To implement
 
 Based on your app you will have to edit:
