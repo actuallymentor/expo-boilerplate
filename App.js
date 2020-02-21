@@ -1,6 +1,6 @@
 // Sentry debugging and Amplitude tracking
-import './src/modules/sentry'
-import './src/modules/amplitude'
+// import './src/modules/sentry'
+// import './src/modules/amplitude'
 
 // React
 import React from 'react'
