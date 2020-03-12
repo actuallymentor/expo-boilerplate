@@ -1,6 +1,6 @@
 // Sentry debugging and Amplitude tracking
-// import './src/modules/sentry'
-// import './src/modules/amplitude'
+// import SentryInit from './src/modules/sentry'
+// import AmplitudeInit from './src/modules/amplitude'
 
 // React
 import React from 'react'
@@ -35,6 +35,12 @@ export default class App extends React.Component {
 		// Put upside down if developing
 		if( process.env.NODE_ENV == 'development' ) await ScreenOrientation.lockAsync( ScreenOrientation.Orientation.PORTRAIT_DOWN )
 		await ScreenOrientation.unlockAsync()
+
+		// Initialise Sentry
+		// SentryInit()
+
+		// Initialise amplitude
+		// AmplitudeInit()
 
 		// Create and store expo push token
 		await askForPushPermissions()
