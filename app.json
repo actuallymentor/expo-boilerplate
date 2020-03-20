@@ -24,7 +24,22 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "<!-- TODO --> bundleIdentifier": "com.x.x",
+      "buildNumber": "1.0.0"
+    },
+     "android": {
+      "<!-- TODO --> bundleIdentifier": "com.x.x",
+      "versionCode": 1,
+      "permissions" : []
+    },
+    "<!-- TODO --> scheme": "appname # Will be used as appname://",
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+        }
+      ]
     }
   }
 }

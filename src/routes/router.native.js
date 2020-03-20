@@ -8,3 +8,5 @@ export const AppRouter = ( { children } ) => <NativeRouter>
 export { Switch } from 'react-router-native'
 
 export { Route } from 'react-router-native'
+
+export { Link } from 'react-router-native'

@@ -10,3 +10,5 @@ export const AppRouter = ( { children } ) => <Router history={ createHashHistory
 export { Switch } from 'react-router-dom'
 
 export { Route } from 'react-router-dom'
+
+export { Link } from 'react-router-dom'
