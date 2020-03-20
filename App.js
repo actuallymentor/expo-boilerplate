@@ -10,6 +10,12 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { store, persistor } from './src/redux/store'
 
+// Paper config
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
+const CustomTheme = {
+	...DefaultTheme
+}
+
 
 // Import router
 import Routes from './src/routes/routes'
@@ -61,8 +67,11 @@ export default class App extends React.Component {
 			<Provider store={ store }>
 				{ /* Redux store persistence across reloads and visits */ }
 				<PersistGate loading={ <Loading /> } persistor={ persistor }>
-					{ /* Connect router */ }
-					<Routes />
+					{ /* Paper theme provider */ }
+					<PaperProvider>
+						{ /* Connect router */ }
+						<Routes />
+					</PaperProvider>
 				</PersistGate>
 			</Provider>
 

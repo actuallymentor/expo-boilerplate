@@ -11,3 +11,10 @@ export default StyleSheet.create( {
 		paddingRight: 10
 	}
 } )
+
+export const position = {
+	center: {
+		display: 'flex',
+		flexDirection: 'column'
+	}
+}

@@ -7,12 +7,7 @@ import { Component } from '../components/stateless/generic'
 import { Switch, Route, AppRouter } from './router'
 
 // DEMO COMPONENT
-import { Container } from '../components/stateless/generic'
-import { Text } from 'react-native'
-const Home = f => <Container>
-	<Text>/ routes</Text>
-</Container>
-
+import Login from '../components/stateless/login'
 // Route maneger class
 export default class Routes extends Component {
 
@@ -20,7 +15,7 @@ export default class Routes extends Component {
 
 		return <AppRouter>
 			<Switch>
-				<Route component={ Home } />
+				<Route component={ Login } />
 			</Switch>
 		</AppRouter>
 
