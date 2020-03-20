@@ -48,7 +48,7 @@ export default class App extends React.Component {
 		// AmplitudeInit()
 
 		// Create and store expo push token
-		await askForPushPermissions()
+		// await askForPushPermissions()
 	}
 
 
