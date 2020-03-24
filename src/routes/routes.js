@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Components
-import { Component } from '../components/stateless/generic'
+import { Component } from '../components/stateless/common/generic'
 
 // Routing
 import { Switch, Route, AppRouter } from './router'
@@ -15,7 +15,7 @@ export default class Routes extends Component {
 
 		return <AppRouter>
 			<Switch>
-				<Route component={ Login } />
+				<Route path='/' component={ Login } />
 			</Switch>
 		</AppRouter>
 

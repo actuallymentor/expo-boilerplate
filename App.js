@@ -20,9 +20,8 @@ const CustomTheme = {
 // Import router
 import Routes from './src/routes/routes'
 
-
 // Visual
-import { Loading } from './src/components/stateless/generic'
+import { Loading } from './src/components/stateless/common/generic'
 
 // Rotation
 import { ScreenOrientation } from 'expo'
@@ -38,8 +37,8 @@ export default class App extends React.Component {
 	
 	async componentDidMount() {
 
-		// Put upside down if developing
-		if( process.env.NODE_ENV == 'development' ) {
+		// Put upside down if developing on mobile, but not in browser
+		if( !navigator.appName && process.env.NODE_ENV == 'development' ) {
 			await ScreenOrientation.lockAsync( ScreenOrientation.Orientation.PORTRAIT_DOWN )
 			await ScreenOrientation.unlockAsync()
 		} else {

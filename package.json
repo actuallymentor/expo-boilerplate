@@ -6,7 +6,9 @@
     "ios": "development=true expo start --ios",
     "web": "development=true expo start --web",
     "eject": "expo eject",
-    "test": "jest"
+    "test": "jest",
+    "refresh": "adb shell am force-stop host.exp.exponent",
+    "stage": "expo publish -c --release-channel staging"
   },
   "jest": {
     "preset": "jest-expo",
@@ -15,12 +17,12 @@
     ]
   },
   "dependencies": {
-    "@babel/core": "^7.8.7",
+    "@babel/core": "^7.9.0",
     "@sentry/browser": "^5.15.0",
     "babel-preset-expo": "~8.0.0",
     "expo": "~36.0.2",
     "expo-analytics-amplitude": "^8.0.0",
-    "expo-cli": "^3.15.4",
+    "expo-cli": "^3.15.5",
     "expo-permissions": "^8.0.0",
     "expo-secure-store": "~8.0.0",
     "history": "^4.10.1",
@@ -36,7 +38,8 @@
     "redux-persist": "^6.0.0",
     "redux-persist-expo-securestore": "^2.0.0",
     "redux-promise-middleware": "^6.1.2",
-    "sentry-expo": "^2.0.1"
+    "sentry-expo": "^2.0.3",
+    "expo-constants": "~8.0.0"
   },
   "devDependencies": {
     "jest": "^25.1.0",

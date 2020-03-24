@@ -10,8 +10,9 @@ import { persistStore, persistReducer } from 'redux-persist'
 import storage from './storage'
 
 // Reducers
+import settingsReducer from './reducers/settingsReducer'
 const reducers = combineReducers( { 
-	reducer: ( state=true, action ) => state
+	settings: settingsReducer
 } )
 
 // Root reducer
@@ -21,6 +22,7 @@ const metaReducer = ( state, action ) => {
 		
 		case "RESETAPP_FULFILLED":
 			state = undefined
+			return undefined
 		break
 
 	}

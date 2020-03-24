@@ -14,11 +14,12 @@ Based on your app you will have to edit:
 
 ## While developing
 
-In `App.js` you will find the `componentDidMount` function which makes the app go upside down when enabled (in case you have the demo phone plugged and rotated).
+- `npm run refresh` to kill expo client through adb on Android
+- `npm run stage` to deploy to staging channel
 
 ## Environment variables
 
-Environment variables in `.env` file are mandatory. Empty strings are allowed (and disable the service)
+Environment variables in `.env` file are mandatory. Empty strings are allowed (and disable the service). You may use a separate `.env.production`
 
 ```shell
 SENTRY_DSN=''
