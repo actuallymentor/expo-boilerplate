@@ -19,13 +19,4 @@ Based on your app you will have to edit:
 
 ## Environment variables
 
-Environment variables in `.env` file are mandatory. Empty strings are allowed (and disable the service). You may use a separate `.env.production`
-
-```shell
-SENTRY_DSN=''
-SENTRY_ORG=''
-SENTRY_PROJECT=''
-SENTRY_AUTH_TOKEN=''
-SENTRY_URL=''
-AMPLITUDE_APIKEY=''
-```
+Environment variables in `.env` file are mandatory. Empty strings are allowed (and disable the service). You may use a separate `.env.production`. There is an overview of variables in the `.env.example` file.
