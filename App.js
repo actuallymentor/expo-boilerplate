@@ -41,7 +41,7 @@ export default class App extends React.Component {
 		if( !navigator.appName && process.env.NODE_ENV == 'development' ) {
 			await ScreenOrientation.lockAsync( ScreenOrientation.Orientation.PORTRAIT_DOWN )
 			await ScreenOrientation.unlockAsync()
-		} else {
+		} else if ( !navigator.appName ) {
 			// Force portrait
 			await ScreenOrientation.lockAsync( ScreenOrientation.Orientation.PORTRAIT )
 		}
