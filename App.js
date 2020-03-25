@@ -67,7 +67,7 @@ export default class App extends React.Component {
 				{ /* Redux store persistence across reloads and visits */ }
 				<PersistGate loading={ <Loading /> } persistor={ persistor }>
 					{ /* Paper theme provider */ }
-					<PaperProvider>
+					<PaperProvider theme={ CustomTheme }>
 						{ /* Connect router */ }
 						<Routes />
 					</PaperProvider>
