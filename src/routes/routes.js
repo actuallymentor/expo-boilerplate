@@ -6,8 +6,9 @@ import { Component } from '../components/stateless/common/generic'
 // Routing
 import { Switch, Route, AppRouter } from './router'
 
-// DEMO COMPONENT
-import Login from '../components/stateless/login'
+// Components
+import LoginRegistration from '../components/stateful/onboarding/login-register'
+
 // Route maneger class
 export default class Routes extends Component {
 
@@ -15,7 +16,7 @@ export default class Routes extends Component {
 
 		return <AppRouter>
 			<Switch>
-				<Route path='/' component={ Login } />
+				<Route path='/' component={ LoginRegistration } />
 			</Switch>
 		</AppRouter>
 

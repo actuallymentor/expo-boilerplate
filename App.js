@@ -13,9 +13,9 @@ import { store, persistor } from './src/redux/store'
 // Paper config
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 const CustomTheme = {
-	...DefaultTheme
+	...DefaultTheme,
+	roundness: 0
 }
-
 
 // Import router
 import Routes from './src/routes/routes'

@@ -1,11 +1,10 @@
 import React from 'react'
 import { View, Text } from 'react-native'
+import { Card as PaperCard, TextInput, Appbar, withTheme } from 'react-native-paper'
 
 // Expo dependencies
 import Constants from 'expo-constants'
 
-// Visual dependencies
-import { Appbar } from 'react-native-paper'
 
 // Optimised react root component
 export class Component extends React.Component {
@@ -33,7 +32,20 @@ export const Header = ( { style, back, title, subtitle, children } ) => <View st
 </View>
 
 // General app container
-export const Container = ( { style, children } ) => <View style={ { flex: 1, flexDirection: 'column', alignItems: 'flex-start', ...style } }>{ children }</View>
+export const Container = withTheme( ( { style, children, theme } ) => <View style={ {
+	flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', backgroundColor: theme.colors.background,
+	...style
+} }>
+	{ children }
+</View> )
+
+// Generic card
+export const Card = ( { containerStyle, style, children } ) => <View style={ containerStyle }>
+	<PaperCard elevation={ 2 } style={ { padding: 20, minWidth: 300, maxWidth: '100%', ...style } }>{ children }</PaperCard>
+</View>
+
+// Generic text input
+export const Input = props => <TextInput mode='flat' dense={ true } { ...props } style={ { marginVertical: 10, backgroundColor: 'none', ...props.style } } />
 
 // Loading screen
 export const Loading = ( { message } ) => <Container>
