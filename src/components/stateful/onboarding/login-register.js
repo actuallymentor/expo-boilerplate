@@ -1,5 +1,5 @@
 import React from 'react'
-import { Component, Container } from '../../stateless/common/generic'
+import { Component, Container, Loading } from '../../stateless/common/generic'
 import { Login } from '../../stateless/onboarding/login-register'
 import { Text } from 'react-native'
 
@@ -13,7 +13,8 @@ export default class LoginRegister extends Component {
 			action: 'login',
 			name: '',
 			email: '',
-			password: ''
+			password: '',
+			loading: false
 		}
 	}
 
@@ -31,7 +32,9 @@ export default class LoginRegister extends Component {
 
 	render() {
 
-		const { action, email, password, name } = this.state
+		const { action, email, password, name, loading } = this.state
+
+		if( loading ) return <Loading />
 
 		return <Container style={ { justifyContent: 'center' } }>
 			<Login name={ name } email={ email } password={ password } onInput={ this.onInput } proceed={ this.onSubmit } toggle={ this.toggleAction } action={ action } />

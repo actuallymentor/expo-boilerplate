@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-import { Card as PaperCard, TextInput, Appbar, withTheme } from 'react-native-paper'
+import { Card as PaperCard, TextInput, Appbar, withTheme, ActivityIndicator, Title } from 'react-native-paper'
 
 // Expo dependencies
 import Constants from 'expo-constants'
@@ -41,15 +41,14 @@ export const Container = withTheme( ( { style, children, theme } ) => <View styl
 
 // Generic card
 export const Card = ( { containerStyle, style, children } ) => <View style={ containerStyle }>
-	<PaperCard elevation={ 2 } style={ { padding: 20, minWidth: 300, maxWidth: '100%', ...style } }>{ children }</PaperCard>
+	<PaperCard elevation={ 2 } style={ { padding: 40, minWidth: 400, maxWidth: '100%', ...style } }>{ children }</PaperCard>
 </View>
 
 // Generic text input
 export const Input = props => <TextInput mode='flat' dense={ true } { ...props } style={ { marginVertical: 10, backgroundColor: 'none', ...props.style } } />
 
 // Loading screen
-export const Loading = ( { message } ) => <Container>
-	<Text>
-		{ message || 'Loading' }
-	</Text>
+export const Loading = ( { message } ) => <Container style={ { justifyContent: 'center' } }>
+		<ActivityIndicator size='large' />
+		<Title style={ { textAlign: 'center', marginTop: 20 } }>{ message || 'Loading' }</Title>
 </Container>
