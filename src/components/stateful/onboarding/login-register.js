@@ -1,7 +1,8 @@
 import React from 'react'
 import { Component, Container, Loading } from '../../stateless/common/generic'
+import Navigation from '../../stateful/common/navigation'
 import { Login } from '../../stateless/onboarding/login-register'
-import { Text } from 'react-native'
+import { Text, View } from 'react-native'
 
 import { log } from '../../../modules/helpers'
 
@@ -36,8 +37,11 @@ export default class LoginRegister extends Component {
 
 		if( loading ) return <Loading />
 
-		return <Container style={ { justifyContent: 'center' } }>
-			<Login name={ name } email={ email } password={ password } onInput={ this.onInput } proceed={ this.onSubmit } toggle={ this.toggleAction } action={ action } />
+		return <Container>
+			<Navigation title={ action } />
+			<View style={ { flex: 1, justifyContent: 'center' } }>
+				<Login name={ name } email={ email } password={ password } onInput={ this.onInput } proceed={ this.onSubmit } toggle={ this.toggleAction } action={ action } />
+			</View>
 		</Container>
 
 	}

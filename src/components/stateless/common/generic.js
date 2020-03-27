@@ -1,9 +1,6 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import { Card as PaperCard, TextInput, Appbar, withTheme, ActivityIndicator, Title } from 'react-native-paper'
-
-// Expo dependencies
-import Constants from 'expo-constants'
 
 
 // Optimised react root component
@@ -21,16 +18,8 @@ export class Component extends React.Component {
 }
 
 // ///////////////////////////////
-// Application scaffolding
+// Resyclable components
 // ///////////////////////////////
-export const Header = ( { style, back, title, subtitle, children } ) => <View style={ { width: '100%' } }>
-	<Appbar.Header style={ { width: '100%', paddingVertical: 30, ...( !back && { paddingLeft: 20 } ), ...style }} statusBarHeight={ Constants.statusBarHeight }>
-		{ back && <Appbar.BackAction onPress={ back } /> }
-		<Appbar.Content title={ title } subtitle={ subtitle }/>
-		{ children }
-	</Appbar.Header>
-</View>
-
 // General app container
 export const Container = withTheme( ( { style, children, theme } ) => <View style={ {
 	flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', backgroundColor: theme.colors.background,
