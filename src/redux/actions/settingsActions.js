@@ -1,9 +1,9 @@
-export const setSomething = input => ( {
-	type: 'NAME',
-	payload: Promise.resolve()
+export const toggleDarkMode = input => ( {
+	type: 'TOGGLEDARKMODE',
+	payload: true
 } )
 
-export const setSomethingElse = input => ( {
-	type: 'NAME',
-	payload: Promise.resolve()
+export const resetApp = input => ( {
+	type: 'RESETAPP',
+	payload: true
 } )

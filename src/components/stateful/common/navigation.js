@@ -3,6 +3,7 @@ import { Animated } from 'react-native'
 import { Component } from '../../stateless/common/generic'
 import { Header, Menu } from '../../stateless/common/navigation'
 import { connect } from 'react-redux'
+import { toggleDarkMode } from '../../../redux/actions/settingsActions'
 import { capitalize, log } from '../../../modules/helpers'
 
 class Navigation extends Component {
@@ -50,10 +51,10 @@ class Navigation extends Component {
 		// If we let go, either reset or hide
 		if( state == 5 && ( translationX > drawerWidth / 5 || velocityX > 2 ) ) return this.toggleDrawer()
 		else return this.toggleDrawer( 'force' )
-		
-		
 
 	}
+
+	toggleDarkMode = f => this.props.dispatch( toggleDarkMode() )
 
 	render( ) {
 
@@ -68,6 +69,7 @@ class Navigation extends Component {
 			toggle={ this.toggleDrawer } 
 			title={ capitalize( title ) }
 			drawer={ drawer }
+			toggleDark={ this.toggleDarkMode }
 		/>
 	}
 

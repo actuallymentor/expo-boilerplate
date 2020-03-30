@@ -3,9 +3,9 @@ import React from 'react'
 import { Router }  from 'react-router-dom'
 import { createHashHistory } from 'history'
 
-export const AppRouter = ( { children } ) => <Router history={ createHashHistory() }>
-	{ children }
-</Router>
+export const History = createHashHistory()
+
+export { Router } from 'react-router-dom'
 
 export { Switch } from 'react-router-dom'
 

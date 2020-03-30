@@ -20,7 +20,8 @@ const metaReducer = ( state, action ) => {
 
 	switch( action.type ) {
 		
-		case "RESETAPP_FULFILLED":
+		case "RESETAPP":
+			console.log( 'Resetting app storage' )
 			state = undefined
 			return undefined
 		break
@@ -40,3 +41,10 @@ const middleware = process.env.NODE_ENV == 'development' ? applyMiddleware( logg
 // Export store and persistor
 export const store = createStore( persistedReducer, middleware )
 export const persistor = persistStore( store )
+
+// Have a persistor purge query option
+if( location.href.indexOf( 'purge' ) != -1 ) {
+	console.log( 'Purge request detected' )
+	persistor.purge()
+	location.href = '/'
+}
