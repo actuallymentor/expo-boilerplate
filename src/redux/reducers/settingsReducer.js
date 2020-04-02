@@ -3,8 +3,8 @@ import { DefaultTheme } from 'react-native-paper'
 const LightTheme = { ...DefaultTheme, roundness: 0, dark: false }
 const DarkTheme = { ...LightTheme, dark: true, colors: {
 	...LightTheme.colors,
-	background: 'black',
-	surface: 'rgb(70,70,70)',
+	background: 'rgb(50,50,50)',
+	surface: 'rgb(120,120,120)',
 	text: 'white',
 	placeholder: 'white'
 } }

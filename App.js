@@ -1,6 +1,5 @@
 // Sentry debugging and Amplitude tracking
 // import SentryInit from './src/modules/sentry'
-// import AmplitudeInit from './src/modules/amplitude'
 
 // React
 import React from 'react'
@@ -35,9 +34,6 @@ export default class App extends React.Component {
 
 		// Initialise Sentry
 		// SentryInit()
-
-		// Initialise amplitude
-		// AmplitudeInit()
 
 		// Create and store expo push token in secure storage { pushtoken }
 		// await askForPushPermissions()
