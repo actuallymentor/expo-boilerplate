@@ -2,8 +2,6 @@ import { applyMiddleware, combineReducers, createStore } from 'redux'
 import promise from 'redux-promise-middleware'
 import logger from 'redux-logger'
 
-// Reducers
-// ....
 
 // Redux persistance
 import { persistStore, persistReducer } from 'redux-persist'
@@ -43,7 +41,8 @@ export const store = createStore( persistedReducer, middleware )
 export const persistor = persistStore( store )
 
 // Have a persistor purge query option
-if( typeof location != 'undefined' && location.href.indexOf( 'purge' ) != -1 ) {
+import { Platform } from 'react-native'
+if( Platform.OS == 'web' && location.href.indexOf( 'purge' ) != -1 ) {
 	console.log( 'Purge request detected' )
 	persistor.purge()
 	location.href = '/'

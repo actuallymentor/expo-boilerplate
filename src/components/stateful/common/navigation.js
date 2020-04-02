@@ -1,5 +1,5 @@
 import React from 'react'
-import { Animated } from 'react-native'
+import { Animated, Platform } from 'react-native'
 import { Component } from '../../stateless/common/generic'
 import { Header, Menu } from '../../stateless/common/navigation'
 import { connect } from 'react-redux'
@@ -34,7 +34,7 @@ class Navigation extends Component {
 	pan = new Animated.ValueXY( { x: this.state.drawerWidth, y: 0 } )
 	handleDrag = Animated.event(
 		[ { translationX: this.pan.x } ],
-		{ useNativeDriver: true }
+		{ useNativeDriver: Platform.OS != 'web' }
 	)
 
 	panDrawer = ( { nativeEvent } ) => {
