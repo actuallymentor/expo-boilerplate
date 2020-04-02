@@ -43,7 +43,7 @@ export const store = createStore( persistedReducer, middleware )
 export const persistor = persistStore( store )
 
 // Have a persistor purge query option
-if( location.href.indexOf( 'purge' ) != -1 ) {
+if( typeof location != 'undefined' && location.href.indexOf( 'purge' ) != -1 ) {
 	console.log( 'Purge request detected' )
 	persistor.purge()
 	location.href = '/'

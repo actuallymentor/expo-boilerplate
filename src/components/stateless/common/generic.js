@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, Text } from 'react-native'
 import { Card as PaperCard, TextInput, Appbar, withTheme, ActivityIndicator, Title } from 'react-native-paper'
 
 
@@ -18,7 +18,7 @@ export class Component extends React.Component {
 }
 
 // ///////////////////////////////
-// Resyclable components
+// Recyclable components
 // ///////////////////////////////
 // General app container
 export const Container = withTheme( ( { style, children, theme } ) => <View style={ {
@@ -29,8 +29,8 @@ export const Container = withTheme( ( { style, children, theme } ) => <View styl
 </View> )
 
 // Generic card
-export const Card = ( { containerStyle, style, children } ) => <View style={ containerStyle }>
-	<PaperCard elevation={ 2 } style={ { padding: 40, minWidth: 400, maxWidth: '100%', ...style } }>{ children }</PaperCard>
+export const Card = ( { containerStyle, style, children } ) => <View style={ { ...containerStyle, padding: 10, minWidth: 400, maxWidth: '100%', flexGrow: 0 } }>
+	<PaperCard elevation={ 2 } style={ { padding: 40, ...style } }>{ children }</PaperCard>
 </View>
 
 // Generic text input
