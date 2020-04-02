@@ -7,6 +7,8 @@ import '@firebase/functions'
 
 // Redux
 import { store } from '../redux/store'
+const { dispatch } from store
+import { resetApp } from '../redux/actions/settingsActions'
 
 // Config
 import config from './config'
@@ -26,8 +28,29 @@ class Firebase {
 		this.listeners = {}
 
 		// Register listeners on load
-		registerListeners( this )
+		this.init()
 
 	}
 
+	// Check if we are logged in etc
+	init( ) {
+		// Listen to the user object
+		app.auth().onAuthStateChanged( user => {
+
+			// Set user to internal property
+			this.user = user
+
+			// Register listeners if we are logged in
+			if( user ) registerListeners( this.listeners )
+
+			// Unregister listeners and reset app if we are not logged in
+			if( !user ) {
+				unregisterListeners( this.listeners )
+				dispatch( resetApp(  ) )
+			}
+		} )
+	}
+
 }
+
+export default new Firebase()

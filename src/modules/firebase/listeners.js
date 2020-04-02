@@ -7,9 +7,9 @@ export function unregisterListeners( listeners ) {
 
 }
 
-export async function registerListeners( app ) {
+export async function registerListeners( listeners ) {
 
 	// Register listeners if they do not yet exist
-	if( !this.listeners.thing ) this.listeners.thing = this.listenForthing()
+	// if( !listeners.thing ) listeners.thing = listenForthing()
 
 }
