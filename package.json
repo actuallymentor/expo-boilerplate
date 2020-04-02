@@ -2,9 +2,10 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "development=true expo start",
-    "android": "development=true expo start --android",
-    "ios": "development=true expo start --ios",
-    "web": "development=true expo start --web",
+    "android": "development=true expo start:android",
+    "ios": "development=true expo start:ios",
+    "web": "development=true expo start:web",
+    "hybrid": "development=true expo start --android --web",
     "eject": "expo eject",
     "test": "jest",
     "refresh": "adb shell am force-stop host.exp.exponent",
@@ -19,11 +20,11 @@
   },
   "dependencies": {
     "@babel/core": "^7.9.0",
-    "@sentry/browser": "^5.15.0",
+    "@sentry/browser": "^5.15.4",
     "babel-preset-expo": "^8.1.0",
-    "expo": "^37.0.0",
+    "expo": "^37.0.3",
     "expo-analytics-amplitude": "~8.1.0",
-    "expo-cli": "^3.15.5",
+    "expo-cli": "^3.17.11",
     "expo-permissions": "~8.1.0",
     "expo-secure-store": "~8.1.0",
     "history": "^4.10.1",
@@ -41,7 +42,8 @@
     "redux-promise-middleware": "^6.1.2",
     "sentry-expo": "^2.0.3",
     "expo-constants": "~9.0.0",
-    "react-native-gesture-handler": "~1.6.0"
+    "react-native-gesture-handler": "~1.6.0",
+    "expo-screen-orientation": "~1.0.0"
   },
   "devDependencies": {
     "jest": "^25.1.0",
