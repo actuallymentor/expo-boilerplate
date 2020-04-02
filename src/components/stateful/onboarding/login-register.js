@@ -34,11 +34,12 @@ export default class LoginRegister extends Component {
 	render() {
 
 		const { action, email, password, name, loading } = this.state
+		const { history } = this.props
 
 		if( loading ) return <Loading />
 
 		return <Container>
-			<Navigation title={ action } />
+			<Navigation go={ to => history.push( to ) } title={ action } />
 			<View style={ { flex: 1, justifyContent: 'center', alignItems: 'center', alignSelf: 'stretch' } }>
 				<Login name={ name } email={ email } password={ password } onInput={ this.onInput } proceed={ this.onSubmit } toggle={ this.toggleAction } action={ action } />
 			</View>

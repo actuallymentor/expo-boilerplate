@@ -8,6 +8,10 @@ import { capitalize, log } from '../../../modules/helpers'
 
 class Navigation extends Component {
 
+	constructor( props ) {
+		super( props )
+	}
+
 	state = {
 		drawer: false,
 		drawerWidth: 500,
@@ -58,7 +62,7 @@ class Navigation extends Component {
 
 	render( ) {
 
-		const { title } = this.props
+		const { title, go } = this.props
 		const { drawer, drawerWidth, drawerOffset } = this.state
 
 		return <Header
@@ -70,6 +74,10 @@ class Navigation extends Component {
 			title={ capitalize( title ) }
 			drawer={ drawer }
 			toggleDark={ this.toggleDarkMode }
+			go={ go }
+			links={ [
+				{ label: 'Home', to: '/' }
+			] }
 		/>
 	}
 
