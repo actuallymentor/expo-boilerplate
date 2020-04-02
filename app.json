@@ -3,7 +3,6 @@
     "name": "Expo Boilerplate",
     "slug": "expo-boilerplate",
     "privacy": "public",
-    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",
@@ -28,10 +27,10 @@
       "<!-- TODO --> bundleIdentifier": "com.x.x",
       "buildNumber": "1.0.0"
     },
-     "android": {
+    "android": {
       "<!-- TODO --> bundleIdentifier": "com.x.x",
       "versionCode": 1,
-      "permissions" : []
+      "permissions": []
     },
     "<!-- TODO --> scheme": "appname # Will be used as appname://",
     "hooks": {
