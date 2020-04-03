@@ -5,6 +5,7 @@ import { Header, Menu } from '../../stateless/common/navigation'
 import { connect } from 'react-redux'
 import { toggleDarkMode } from '../../../redux/actions/settingsActions'
 import { capitalize, log } from '../../../modules/helpers'
+import app from '../../../modules/firebase/app'
 
 class Navigation extends Component {
 
@@ -62,8 +63,9 @@ class Navigation extends Component {
 
 	render( ) {
 
-		const { title, go } = this.props
+		const { title, go, user } = this.props
 		const { drawer, drawerWidth, drawerOffset } = this.state
+
 
 		return <Header
 			drawerTranslate={ { transform: this.pan.getTranslateTransform() } }
@@ -76,7 +78,14 @@ class Navigation extends Component {
 			toggleDark={ this.toggleDarkMode }
 			go={ go }
 			links={ [
-				{ label: 'Home', to: '/' }
+
+				// Static links
+				{ label: 'Home', to: '/' },
+
+				// Dynamic links when user is logged in
+				...( user ? [
+					{ label: 'Logout', onPress: app.logout }
+				] : [] )
 			] }
 		/>
 	}
@@ -84,5 +93,5 @@ class Navigation extends Component {
 }
 
 export default connect( store => ( {
-
+	user: !!store.user
 } ) )( Navigation )

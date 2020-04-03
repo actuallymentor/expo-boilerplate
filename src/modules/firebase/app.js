@@ -1,55 +1,59 @@
 // import * as firebase from 'firebase'
-import * as firebase from 'firebase/app'
-import '@firebase/firestore'
-import '@firebase/auth'
-import '@firebase/storage'
-import '@firebase/functions'
+import  firebase from 'firebase/app'
+import 'firebase/firestore'
+import 'firebase/auth'
+import 'firebase/storage'
+import 'firebase/functions'
 
 // Redux
-import { store } from '../redux/store'
-const { dispatch } from store
-import { resetApp } from '../redux/actions/settingsActions'
+import { store } from '../../redux/store'
+const { dispatch } = store
+
+// Actions
+import { resetApp } from '../../redux/actions/settingsActions'
+import { setUserAction } from '../../redux/actions/userActions'
 
 // Config
 import config from './config'
 
 // Functions
-import { unregisterListeners, registerListeners } from './listeners'
+import { listenForUserAndStartListeners, unregisterListeners, addListener } from './listeners'
+import { registerUser, loginUser, getUser, updateUser, logoutUser, deleteUser } from './user'
 
+// ///////////////////////////////
+// Firebase manager class
+// ///////////////////////////////
 class Firebase {
 
-	constructor(  ) {
+	// ///////////////////////////////
+	// Set up firebase
+	// ///////////////////////////////
+	fb 			= firebase.initializeApp( config )
+	db 			= this.fb.firestore()
+	storage 	= this.fb.storage().ref()
+	func 		= this.fb.functions()
+	auth 		= this.fb.auth()
+	listeners 	= {}
 
-		// init properties
-		this.fb = firebase.initialiseApp( config )
-		this.db = this.fb.firestore()
-		this.storage = this.fb.storage().ref()
-		this.func = this.fb.functions()
-		this.listeners = {}
+	// ///////////////////////////////
+	// User actions
+	// ///////////////////////////////
+	getUser		  = f => getUser( this )
+	registerUser  = ( name, email, pass ) => registerUser( this, name, email, pass )
+	loginUser     = ( email, pass ) => loginUser( this.auth, email, pass )
+	updateUser	  = ( name, photoUrl ) => updateUser( this.auth, name, photoUrl, dispatch, setUserAction )
+	logout		  = f => logoutUser( this.auth )
+	deleteUser	  = f => deleteUser( this.auth )
 
-		// Register listeners on load
-		this.init()
+	// ///////////////////////////////
+	// Initialisation
+	// ///////////////////////////////
 
-	}
+	// Register user listener, if no user reset the app
+	init = f => listenForUserAndStartListeners( this, dispatch, setUserAction, resetApp )
 
-	// Check if we are logged in etc
-	init( ) {
-		// Listen to the user object
-		app.auth().onAuthStateChanged( user => {
-
-			// Set user to internal property
-			this.user = user
-
-			// Register listeners if we are logged in
-			if( user ) registerListeners( this.listeners )
-
-			// Unregister listeners and reset app if we are not logged in
-			if( !user ) {
-				unregisterListeners( this.listeners )
-				dispatch( resetApp(  ) )
-			}
-		} )
-	}
+	
+	
 
 }
 

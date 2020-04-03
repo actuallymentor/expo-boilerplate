@@ -6,6 +6,8 @@ import { Text, View } from 'react-native'
 
 import { log } from '../../../modules/helpers'
 
+import app from '../../../modules/firebase/app'
+
 export default class LoginRegister extends Component {
 
 	constructor( props ) {
@@ -25,10 +27,34 @@ export default class LoginRegister extends Component {
 	// Log/reg toggle
 	toggleAction = f => this.updateState( { action: this.state.action == 'login' ? 'register' : 'login' } )
 
-	// Handle account/session
-	onSubmit = f => {
+	// Validate input
+	validate = f => {
 		const { action, email, password, name } = this.state
-		log( [ action, email, password, name ] )
+		if( !email ) return 'Please fill in your email address'
+		if( !password ) return 'Please fill in your password'
+		if( action == 'register' && !name ) return 'Please fill in your name'
+		return false
+	}
+
+	// Handle account/session
+	onSubmit = async f => {
+
+		// Validate input
+		const missing = this.validate()
+		if( missing ) return alert( missing )
+
+		const { action, email, password, name } = this.state
+
+		await this.updateState( { loading: `Best app ${action} ever...` } )
+
+		try {
+			if( action == 'login' ) await app.loginUser( email, password )
+			if( action == 'register' ) await app.registerUser( name, email, password )
+		} catch( e ) {
+			log( e )
+		}
+
+		await this.updateState( { loading: false } )
 	}
 
 	render() {
@@ -36,7 +62,7 @@ export default class LoginRegister extends Component {
 		const { action, email, password, name, loading } = this.state
 		const { history } = this.props
 
-		if( loading ) return <Loading />
+		if( loading ) return <Loading message={ loading } />
 
 		return <Container>
 			<Navigation go={ to => history.push( to ) } title={ action } />

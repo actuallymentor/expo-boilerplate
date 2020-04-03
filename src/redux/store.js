@@ -9,8 +9,10 @@ import storage from './storage'
 
 // Reducers
 import settingsReducer from './reducers/settingsReducer'
+import userReducer from './reducers/userReducer'
 const reducers = combineReducers( { 
-	settings: settingsReducer
+	settings: settingsReducer,
+	user: userReducer
 } )
 
 // Root reducer
@@ -21,7 +23,7 @@ const metaReducer = ( state, action ) => {
 		case "RESETAPP":
 			console.log( 'Resetting app storage' )
 			state = undefined
-			return undefined
+			// return undefined
 		break
 
 	}

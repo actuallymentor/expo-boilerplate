@@ -1,16 +1,25 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
+
     "start": "development=true expo start",
     "android": "development=true expo start:android",
     "ios": "development=true expo start:ios",
     "web": "development=true expo start:web",
     "hybrid": "development=true expo start --android --web",
-    "eject": "expo eject",
+
+
     "test": "jest",
+
     "refresh": "adb shell am force-stop host.exp.exponent",
     "debug": "adb shell input keyevent 82",
-    "stage": "expo publish -c --release-channel staging"
+
+    "stage": "expo publish -c --release-channel staging",
+    "compile:android": "export $(cat .env | xargs) && expo build:android",
+    "compile:ios": "export $(cat .env | xargs) && expo build:ios",
+
+    "publish": "export $(cat .env | xargs) && expo publish"
+
   },
   "jest": {
     "preset": "jest-expo",

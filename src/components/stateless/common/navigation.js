@@ -49,7 +49,7 @@ export const Menu = withTheme( ( { width, links, go, theme, toggle, pan, transla
 						<Drawer.Section title='Menu' style={ { height: '100%', marginBottom: 0 } }>
 						
 							{ /* Elements included from above */ }
-							{ links.map( ( { label, to } ) => <Drawer.Item key={ label+to } label={ label } onPress={ f => go( to ) } /> ) }
+							{ links.map( ( { label, to, onPress } ) => <Drawer.Item key={ label+to } label={ label } onPress={ onPress ? onPress : f => go( to ) } /> ) }
 
 							{ /* Darkmode toggle */ }
 						    <DarkMode toggleDark={ toggleDark } theme={ theme } />
