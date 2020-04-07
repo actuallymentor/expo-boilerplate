@@ -3,15 +3,12 @@ import { Animated, Platform } from 'react-native'
 import { Component } from '../../stateless/common/generic'
 import { Header, Menu } from '../../stateless/common/navigation'
 import { connect } from 'react-redux'
+import { withRouter } from '../../../routes/router'
 import { toggleDarkMode } from '../../../redux/actions/settingsActions'
 import { capitalize, log } from '../../../modules/helpers'
 import app from '../../../modules/firebase/app'
 
 class Navigation extends Component {
-
-	constructor( props ) {
-		super( props )
-	}
 
 	state = {
 		drawer: false,
@@ -63,9 +60,8 @@ class Navigation extends Component {
 
 	render( ) {
 
-		const { title, go, user } = this.props
+		const { title, user, history } = this.props
 		const { drawer, drawerWidth, drawerOffset } = this.state
-
 
 		return <Header
 			drawerTranslate={ { transform: this.pan.getTranslateTransform() } }
@@ -76,7 +72,7 @@ class Navigation extends Component {
 			title={ capitalize( title ) }
 			drawer={ drawer }
 			toggleDark={ this.toggleDarkMode }
-			go={ go }
+			go={ to => history.push( to ) }
 			links={ [
 
 				// Static links
@@ -92,6 +88,6 @@ class Navigation extends Component {
 
 }
 
-export default connect( store => ( {
+export default withRouter( connect( store => ( {
 	user: !!store.user
-} ) )( Navigation )
+} ) )( Navigation ) )

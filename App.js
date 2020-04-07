@@ -11,6 +11,7 @@ import { store, persistor } from './src/redux/store'
 
 // Import router
 import Routes from './src/routes/routes'
+import { History, Router } from './src/routes/router'
 
 // Visual
 import { Loading } from './src/components/stateless/common/generic'
@@ -56,7 +57,10 @@ export default class App extends React.Component {
 				{ /* Redux store persistence across reloads and visits */ }
 				<PersistGate loading={ <Loading /> } persistor={ persistor }>
 						{ /* Connect router */ }
-						<Routes />
+						<Router history={ History }>
+							<Routes />
+						</Router>
+						
 				</PersistGate>
 			</Provider>
 

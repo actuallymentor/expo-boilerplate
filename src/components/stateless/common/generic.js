@@ -1,6 +1,6 @@
 import React from 'react'
-import { View, Text } from 'react-native'
-import { Card as PaperCard, TextInput, Appbar, withTheme, ActivityIndicator, Title } from 'react-native-paper'
+import { View } from 'react-native'
+import { Card as PaperCard, TextInput, Appbar, withTheme, ActivityIndicator, Title, Button as PaperButton } from 'react-native-paper'
 
 
 // Optimised react root component
@@ -36,8 +36,20 @@ export const Card = ( { containerStyle, style, children } ) => <View style={ { .
 // Generic text input
 export const Input = props => <TextInput mode='flat' dense={ true } { ...props } style={ { marginVertical: 10, backgroundColor: 'none', ...props.style } } />
 
+// Button
+export const Button = ( { style, mode, children, ...props } ) => <PaperButton style={ { marginTop: 20, ...style } } mode={ mode || 'contained' } { ...props }>{ children }</PaperButton>
+
 // Loading screen
 export const Loading = ( { message } ) => <Container style={ { justifyContent: 'center' } }>
 		<ActivityIndicator size='large' />
 		<Title style={ { textAlign: 'center', marginTop: 20 } }>{ message || 'Loading' }</Title>
 </Container>
+
+export const Main = {
+	Center: ( { children } ) => <View style={ { flex: 1, justifyContent: 'center', alignItems: 'center', alignSelf: 'stretch' } }>{ children }</View>
+}
+
+// ///////////////////////////////
+// Pass through exports straignt from paper
+// ///////////////////////////////
+export { Divider, Drawer, Portal, Appbar, withTheme, Surface, Text, Title } from 'react-native-paper'

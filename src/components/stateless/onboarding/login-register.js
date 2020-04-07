@@ -1,7 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { TextInput, Button, Divider } from 'react-native-paper'
-import { Card, Input } from '../common/generic'
+import { Card, Input, Button, Divider } from '../common/generic'
 
 export const Login = ( { toggle, proceed, onInput, action='login', name, email, password } ) => <Card>
 		{ action == 'register' && <Input value={ name } onChangeText={ t => onInput( 'name', t ) } label='name' /> }

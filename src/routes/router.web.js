@@ -12,3 +12,5 @@ export { Switch } from 'react-router-dom'
 export { Route } from 'react-router-dom'
 
 export { Link } from 'react-router-dom'
+
+export { withRouter } from 'react-router-dom'

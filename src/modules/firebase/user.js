@@ -25,7 +25,13 @@ export const loginUser = async ( auth, email, password ) => auth.signInWithEmail
 export const updateUser = async ( auth, displayName, photoURL, dispatch, action ) => ( displayName || photoURL ) && auth.currentUser.updateProfile( {
 	...( displayName && { displayName: displayName } ),
 	...( photoURL && { photoURL: photoURL } )
-} ).then( f => dispatch( action( auth.currentUser ) ) )
+} )
+// Return the new user to redux
+.then( f => dispatch( action( {
+	email: auth.currentUser.email,
+	name: auth.currentUser.displayName,
+	avatar: auth.currentUser.profileUrl
+} ) ) )
 
 // Get tehe current user
 export const getUser = app => app.user

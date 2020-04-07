@@ -11,4 +11,10 @@ export const error = msg => {
 	}
 }
 
+export const catcher = e => {
+	log( e )
+	// throw to sentry
+	throw e
+}
+
 export const capitalize = string => string ? string.charAt(0).toUpperCase() + string.slice(1) : undefined

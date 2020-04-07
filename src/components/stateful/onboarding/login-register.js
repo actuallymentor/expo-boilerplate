@@ -1,8 +1,7 @@
 import React from 'react'
-import { Component, Container, Loading } from '../../stateless/common/generic'
+import { Component, Container, Loading, Main } from '../../stateless/common/generic'
 import Navigation from '../../stateful/common/navigation'
 import { Login } from '../../stateless/onboarding/login-register'
-import { Text, View } from 'react-native'
 
 import { log } from '../../../modules/helpers'
 
@@ -10,15 +9,13 @@ import app from '../../../modules/firebase/app'
 
 export default class LoginRegister extends Component {
 
-	constructor( props ) {
-		super( props )
-		this.state = {
-			action: 'login',
-			name: '',
-			email: '',
-			password: '',
-			loading: false
-		}
+	// initialise state
+	state = {
+		action: 'login',
+		name: '',
+		email: '',
+		password: '',
+		loading: false
 	}
 
 	// Input handler
@@ -44,12 +41,14 @@ export default class LoginRegister extends Component {
 		if( missing ) return alert( missing )
 
 		const { action, email, password, name } = this.state
+		const { history } = this.props
 
 		await this.updateState( { loading: `Best app ${action} ever...` } )
 
 		try {
 			if( action == 'login' ) await app.loginUser( email, password )
 			if( action == 'register' ) await app.registerUser( name, email, password )
+			return history.push( '/user/settings' )
 		} catch( e ) {
 			log( e )
 		}
@@ -65,10 +64,10 @@ export default class LoginRegister extends Component {
 		if( loading ) return <Loading message={ loading } />
 
 		return <Container>
-			<Navigation go={ to => history.push( to ) } title={ action } />
-			<View style={ { flex: 1, justifyContent: 'center', alignItems: 'center', alignSelf: 'stretch' } }>
+			<Navigation title={ action } />
+			<Main.Center style={ { flex: 1, justifyContent: 'center', alignItems: 'center', alignSelf: 'stretch' } }>
 				<Login name={ name } email={ email } password={ password } onInput={ this.onInput } proceed={ this.onSubmit } toggle={ this.toggleAction } action={ action } />
-			</View>
+			</Main.Center>
 		</Container>
 
 	}

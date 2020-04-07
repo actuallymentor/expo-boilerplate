@@ -11,3 +11,5 @@ export { Switch } from 'react-router-native'
 export { Route } from 'react-router-native'
 
 export { Link } from 'react-router-native'
+
+export { withRouter } from 'react-router-native'

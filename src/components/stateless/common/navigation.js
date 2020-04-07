@@ -2,7 +2,7 @@ import React from 'react'
 
 // Visual
 import { TouchableOpacity, View, Animated, Switch } from 'react-native'
-import { Drawer, Portal, Appbar, withTheme, Surface, Text } from 'react-native-paper'
+import { Drawer, Portal, Appbar, withTheme, Surface, Text } from './generic'
 import { PanGestureHandler } from 'react-native-gesture-handler'
 
 
@@ -27,8 +27,9 @@ export const Header = ( { style, back, title, subtitle, toggle, pan, drawer, dra
 // ///////////////////////////////
 const DarkMode = ( { toggleDark, theme } ) => <View style={ { flexDirection: 'row', marginTop: 'auto', paddingHorizontal: 20, paddingVertical: 20, borderTopWidth: 1, borderTopColor: theme.colors.divider } }>
 	<Text style={ { opacity: .7 } } onPress={ toggleDark }>Dark mode</Text>
-<Switch thumbColor={ theme.dark ? theme.colors.primary : theme.colors.background } onValueChange={ toggleDark } style={ { marginLeft: 20 } } value={ theme.dark } />
-					    </View>
+	<Switch thumbColor={ theme.dark ? theme.colors.primary : theme.colors.background } onValueChange={ toggleDark } style={ { marginLeft: 20 } } value={ theme.dark } />
+</View>
+
 export const Menu = withTheme( ( { width, links, go, theme, toggle, pan, translate, toggleDark, ...props } ) => <Portal style={ { alignItems: 'center', justifyContent: 'center' } }>
 
 	{  /* Touchable backdrop that closes the sidebar */ }
