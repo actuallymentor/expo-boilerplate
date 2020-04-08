@@ -52,4 +52,4 @@ export const Main = {
 // ///////////////////////////////
 // Pass through exports straignt from paper
 // ///////////////////////////////
-export { Divider, Drawer, Portal, Appbar, withTheme, Surface, Text, Title } from 'react-native-paper'
+export { Divider, Drawer, Portal, Appbar, withTheme, Surface, Text, Title, Avatar } from 'react-native-paper'
