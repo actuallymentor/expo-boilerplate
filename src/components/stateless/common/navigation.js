@@ -2,18 +2,15 @@ import React from 'react'
 
 // Visual
 import { TouchableOpacity, View, Animated, Switch } from 'react-native'
-import { Drawer, Portal, Appbar, withTheme, Surface, Text } from './generic'
+import { Drawer, Portal, Appbar, withTheme, Surface, Text, StatusBar } from './generic'
 import { PanGestureHandler } from 'react-native-gesture-handler'
-
-
-// Expo dependencies
-import Constants from 'expo-constants'
 
 // ///////////////////////////////
 // Header
 // ///////////////////////////////
 export const Header = ( { style, back, title, subtitle, toggle, pan, drawer, drawerWidth, drawerTranslate, toggleDark, children, links, go } ) => <View style={ { width: '100%' } }>
-	<Appbar.Header style={ { width: '100%', paddingVertical: 30, ...( !back && { paddingLeft: 20 } ), ...style }} statusBarHeight={ Constants.statusBarHeight }>
+	<StatusBar />
+	<Appbar.Header style={ { width: '100%', paddingVertical: 30, ...( !back && { paddingLeft: 20 } ), ...style } } statusBarHeight={ 0 }>
 		{ back && <Appbar.BackAction onPress={ back } /> }
 		<Appbar.Content title={ title } subtitle={ subtitle }/>
 		{ children }

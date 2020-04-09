@@ -19,8 +19,6 @@ class Navigation extends Component {
 	// Drawer toggler
 	toggleDrawer = async config => {
 
-		console.log( 'TOGGLE!' )
-
 		const { drawer, drawerWidth, drawerSpeed } = this.state
 		const force = config == 'force'
 

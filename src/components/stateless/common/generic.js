@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, StatusBar as Bar } from 'react-native'
 import { Card as PaperCard, TextInput, Appbar, withTheme, ActivityIndicator, Title, Button as PaperButton } from 'react-native-paper'
 
 
@@ -26,6 +26,11 @@ export const Container = withTheme( ( { style, children, theme } ) => <View styl
 	...style
 } }>
 	{ children }
+</View> )
+
+// Status bar
+export const StatusBar = withTheme( ( { theme } ) => <View>
+	<Bar backgroundColor={ theme.colors.primary } /> 
 </View> )
 
 // Generic card
