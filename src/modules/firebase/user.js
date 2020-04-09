@@ -69,9 +69,10 @@ export const loginUser = async ( auth, email, password ) => auth.signInWithEmail
 // Update the user profile and return the new user object to store
 export const updateUser = async ( app, userUpdates ) => {
 
-	const { uid, email, newpassword, currentpassword, ...updates } = userUpdates
+	let { uid, email, newpassword, currentpassword, newavatar, avatar, ...updates } = userUpdates
 
 	try {
+
 		// If email change was requested, set to firebase auth object
 		if( email && currentpassword ) {
 			await app.loginUser( app.auth.currentUser.email, currentpassword )
@@ -81,6 +82,21 @@ export const updateUser = async ( app, userUpdates ) => {
 			await app.loginUser( app.auth.currentUser.email, currentpassword )
 			await app.auth.currentUser.updatePassword( newpassword )
 		}
+
+		// If new file was added
+		if( newavatar ) {
+
+			// Upload new file
+			const { ref } = await app.storage.child( newavatar.path ).putString( newavatar.uri, 'data_url' )
+			const url = await ref.getDownloadURL()
+			updates.avatar = {
+				url: url,
+				path: newavatar.path
+			}
+			// Delete old file
+			await app.storage.child( avatar.path ).delete()
+		}
+
 		// Set other properties to store
 		await app.db.collection( 'users' ).doc( app.auth.currentUser.uid ).set( {
 			...updates,

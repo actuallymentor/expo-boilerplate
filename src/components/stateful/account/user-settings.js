@@ -7,7 +7,7 @@ import { View } from 'react-native'
 import { Settings } from '../../stateless/account/user-settings'
 
 // Helpers
-import { log, catcher } from '../../../modules/helpers'
+import { log, catcher, getuuid	 } from '../../../modules/helpers'
 
 // Data
 import app from '../../../modules/firebase/app'
@@ -60,6 +60,18 @@ class UserSettings extends Component {
 	saveChanges = async f => {
 
 		const { user, settings } = this.state
+
+		// Avatar processing
+		if( user.newavatar ) {
+
+			// Check if extension is valid
+			const extension = user.newavatar.uri.match(/(?:image\/)(.*)(?:;)/)[1]
+			if( ![ 'png', 'jpg', 'jpeg' ].includes( extension ) ) return alert( 'Please select a png or jpg image.' )
+
+			// If extension valid, add path to avatar
+			const path = `avatars/${ await getuuid() }.${ extension }`
+			user.newavatar.path = path
+		}
 
 		await this.updateState( { loading: true } )
 
