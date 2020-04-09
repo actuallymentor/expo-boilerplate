@@ -12,12 +12,14 @@ class Navigation extends Component {
 
 	state = {
 		drawer: false,
-		drawerWidth: 500,
+		drawerWidth: 300,
 		drawerSpeed: 500
 	}
 
 	// Drawer toggler
 	toggleDrawer = async config => {
+
+		console.log( 'TOGGLE!' )
 
 		const { drawer, drawerWidth, drawerSpeed } = this.state
 		const force = config == 'force'
@@ -36,12 +38,13 @@ class Navigation extends Component {
 	pan = new Animated.ValueXY( { x: this.state.drawerWidth, y: 0 } )
 	handleDrag = Animated.event(
 		[ { translationX: this.pan.x } ],
-		{ useNativeDriver: Platform.OS != 'web' }
+		// { useNativeDriver: Platform.OS != 'web' },
+		{ useNativeDriver: false }
 	)
 
 	panDrawer = ( { nativeEvent } ) => {
 
-		const { translationX, velocityX, state } = nativeEvent
+		const { translationX, velocityX, state, oldState } = nativeEvent
 		const { drawerWidth } = this.state
 
 		// If drag is not on x axis or is to the left of base position ignore

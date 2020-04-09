@@ -39,12 +39,12 @@ export const Menu = withTheme( ( { width, links, go, theme, toggle, pan, transla
 		<TouchableOpacity activeOpacity={ 1 } style={ { height: '100%', width: width, maxWidth: '100%', alignSelf: 'flex-end' } } onPress={ e => e.preventDefault() }>
 
 			{ /* Animation gesture handler */ }
-			<PanGestureHandler onGestureEvent={ pan }>
+			<PanGestureHandler onHandlerStateChange={ pan } onGestureEvent={ pan }>
 
 				<Animated.View style={ [ translate, { flex: 1 } ] }>
 
 					{ /* Visual surface element */ }
-					<Surface style={ { flex: 1 } }>
+					<Surface elevation={ 1 } style={ { flex: 1 } }>
 
 						{ /* Title */ }
 						<Drawer.Section title='Menu' style={ { height: '100%', marginBottom: 0 } }>
