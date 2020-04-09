@@ -5,6 +5,7 @@ import { Component, Container, Loading } from '../../stateless/common/generic'
 import Navigation from '../../stateful/common/navigation'
 import { View } from 'react-native'
 import { Settings } from '../../stateless/account/user-settings'
+import * as ImageManipulator from "expo-image-manipulator"
 
 // Helpers
 import { log, catcher, getuuid	 } from '../../../modules/helpers'
@@ -68,8 +69,13 @@ class UserSettings extends Component {
 			const extension = user.newavatar.uri.match(/(?:image\/)(.*)(?:;)/)[1]
 			if( ![ 'png', 'jpg', 'jpeg' ].includes( extension ) ) return alert( 'Please select a png or jpg image.' )
 
+			// Compress the image
+			const resize = [ { resize: { width: 500, height: 500 } } ]
+			const compress = [ { compress: .8 } ]
+			user.newavatar = await ImageManipulator.manipulateAsync( user.newavatar.uri, resize, compress )
+
 			// If extension valid, add path to avatar
-			const path = `avatars/${ await getuuid() }.${ extension }`
+			const path = `avatars/${ user.uid }-${ await getuuid() }.${ extension }`
 			user.newavatar.path = path
 		}
 

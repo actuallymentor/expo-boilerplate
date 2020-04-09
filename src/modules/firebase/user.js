@@ -94,7 +94,7 @@ export const updateUser = async ( app, userUpdates ) => {
 				path: newavatar.path
 			}
 			// Delete old file
-			await app.storage.child( avatar.path ).delete()
+			if( avatar ) await app.storage.child( avatar.path ).delete()
 		}
 
 		// Set other properties to store
