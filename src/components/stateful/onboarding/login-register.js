@@ -46,11 +46,12 @@ export default class LoginRegister extends Component {
 		await this.updateState( { loading: `Best app ${action} ever...` } )
 
 		try {
-			if( action == 'login' ) await app.loginUser( email, password )
-			if( action == 'register' ) await app.registerUser( name, email, password )
+			if( action == 'login' ) await app.loginUser( email.trim(), password )
+			if( action == 'register' ) await app.registerUser( name.trim(), email.trim(), password )
 			return history.push( '/user/settings' )
 		} catch( e ) {
 			log( e )
+			alert( e )
 		}
 
 		await this.updateState( { loading: false } )

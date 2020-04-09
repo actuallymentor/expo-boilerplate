@@ -70,7 +70,7 @@ export const loginUser = async ( auth, email, password ) => auth.signInWithEmail
 export const updateUser = async ( app, userUpdates ) => {
 
 	let { uid, email, newpassword, currentpassword, newavatar, avatar, ...updates } = userUpdates
-
+	
 	try {
 
 		// If email change was requested, set to firebase auth object
@@ -87,10 +87,10 @@ export const updateUser = async ( app, userUpdates ) => {
 		if( newavatar ) {
 
 			// Upload new file
-			const { ref } = await app.storage.child( newavatar.path ).putString( newavatar.uri, 'data_url' )
+			const { ref } = await app.storage.child( newavatar.path ).put( newavatar.blob )
 			const url = await ref.getDownloadURL()
 			updates.avatar = {
-				url: url,
+				uri: url,
 				path: newavatar.path
 			}
 			// Delete old file

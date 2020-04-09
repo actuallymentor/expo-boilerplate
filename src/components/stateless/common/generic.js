@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StatusBar as Bar } from 'react-native'
+import { ScrollView, View, StatusBar as Bar } from 'react-native'
 import { Card as PaperCard, TextInput, Appbar, withTheme, ActivityIndicator, Title, Button as PaperButton } from 'react-native-paper'
 
 
@@ -51,7 +51,7 @@ export const Loading = ( { message } ) => <Container style={ { justifyContent: '
 </Container>
 
 export const Main = {
-	Center: ( { children } ) => <View style={ { flex: 1, justifyContent: 'center', alignItems: 'center', alignSelf: 'stretch' } }>{ children }</View>
+	Center: ( { children } ) => <ScrollView style={ { flex: 1 } } contentContainerStyle={ { flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column' } }>{ children }</ScrollView>
 }
 
 // ///////////////////////////////

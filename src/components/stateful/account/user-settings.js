@@ -21,25 +21,12 @@ class UserSettings extends Component {
 		// initialise state
 		this.state = {
 			loading: false,
-			user: props.user,
-			settings: props.settings,
+			user: {},
+			settings: {},
 			passwordRequired: false
 		}
 	}
 
-	shouldComponentUpdate = ( nextProps, nextState ) => {
-
-		const { user, settings } = this.props
-		const { settings: nextSettings, user: nextUser } = nextProps
-
-		// If redux updated our values
-		if( nextSettings != settings ) nextState.settings = nextSettings
-		if( nextUser != user ) nextState.user = nextUser
-
-		// Always rerender
-		return true
-	
-	}
 
 	// Sensitive input?
 	isSensitive = f => { 
@@ -47,7 +34,7 @@ class UserSettings extends Component {
 		const { user, passwordRequired } = this.state 
 		const { user: oldUser } = this.props
 
-		if( ( user.email != oldUser.email ) || user.newpassword ) return this.updateState( { passwordRequired: true } )
+		if( user.email && ( user.email != oldUser.email ) || user.newpassword ) return this.updateState( { passwordRequired: true } )
 
 		if( passwordRequired ) return this.updateState( { passwordRequired: false } )
 
@@ -61,21 +48,27 @@ class UserSettings extends Component {
 	saveChanges = async f => {
 
 		const { user, settings } = this.state
+		const { uid } = this.props.user
 
 		// Avatar processing
 		if( user.newavatar ) {
 
 			// Check if extension is valid
-			const extension = user.newavatar.uri.match(/(?:image\/)(.*)(?:;)/)[1]
+			const dataUriExt = user.newavatar.uri.match( /(?:image\/)(.*)(?:;)/ )
+			const extension = dataUriExt ? dataUriExt[1] : 'jpg'
 			if( ![ 'png', 'jpg', 'jpeg' ].includes( extension ) ) return alert( 'Please select a png or jpg image.' )
 
 			// Compress the image
 			const resize = [ { resize: { width: 500, height: 500 } } ]
-			const compress = [ { compress: .8 } ]
-			user.newavatar = await ImageManipulator.manipulateAsync( user.newavatar.uri, resize, compress )
+			const options = { compress: .8 }
+			user.newavatar = await ImageManipulator.manipulateAsync( user.newavatar.uri, resize, options )
+
+			// Create file blob for upload
+			const file = await fetch( user.newavatar.uri )
+			user.newavatar.blob = await file.blob()
 
 			// If extension valid, add path to avatar
-			const path = `avatars/${ user.uid }-${ await getuuid() }.${ extension }`
+			const path = `avatars/${ uid }-${ await getuuid() }.${ extension }`
 			user.newavatar.path = path
 		}
 
@@ -94,13 +87,14 @@ class UserSettings extends Component {
 
 	render() {
 
-		const { loading, user, settings, passwordRequired } = this.state
+		const { loading, user: newuser, settings: newsettings, passwordRequired } = this.state
+		const { settings, user } = this.props
 
 		if( !user || loading ) return <Loading message={ loading } />
 
 		return <Container>
 			<Navigation title='User settings' />
-			<Settings passwordRequired={ passwordRequired } user={ user } changeUser={ this.changeUser } settings={ settings } changeSetting={ this.changeSetting } saveChanges={ this.saveChanges } />
+			<Settings passwordRequired={ passwordRequired } user={ { ...user, ...newuser } } changeUser={ this.changeUser } settings={ { ...settings, ...newsettings } } changeSetting={ this.changeSetting } saveChanges={ this.saveChanges } />
 		</Container>
 
 	}

@@ -14,7 +14,7 @@ class ShowOrPickImage extends Component {
 
 	state = {
 		imgSource: 'gallery',
-		image: this.props.image
+		image: undefined
 	}
 
 
@@ -53,11 +53,11 @@ class ShowOrPickImage extends Component {
 
 	render( ) {
 
-		const { image } = this.state
-		const { style, theme, size } = this.props
+		const { image: chosenImage } = this.state
+		const { style, theme, size, image } = this.props
 
 		return <TouchableOpacity onPress={ this.pickImage } style={ { alignItems: 'center', justifyContent: 'center', ...style } }>
-			{ image ? <Avatar.Image size={ size || 100 } source={ image } /> : <Avatar.Icon size={ size || 100 } icon='camera' /> }
+			{ ( image || chosenImage ) ? <Avatar.Image size={ size || 100 } source={ chosenImage || image } /> : <Avatar.Icon size={ size || 100 } icon='camera' /> }
 		</TouchableOpacity>
 
 	}
