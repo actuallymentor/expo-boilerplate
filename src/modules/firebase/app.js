@@ -10,15 +10,14 @@ import { store } from '../../redux/store'
 const { dispatch } = store
 
 // Actions
-import { resetApp } from '../../redux/actions/settingsActions'
 import { setUserAction } from '../../redux/actions/userActions'
 
 // Config
 import config from './config'
 
 // Functions
-import { listenForUserAndStartListeners, unregisterListeners, addListener } from './listeners'
-import { registerUser, loginUser, getUser, updateUser, logoutUser, deleteUser } from './user'
+import { listenForUserAndStartListeners, unregisterListeners, registerListeners } from './listeners'
+import { listenUserLogin, listenUserChanges, registerUser, loginUser, updateUser, logoutUser, deleteUser } from './user'
 
 // ///////////////////////////////
 // Firebase manager class
@@ -38,10 +37,9 @@ class Firebase {
 	// ///////////////////////////////
 	// User actions
 	// ///////////////////////////////
-	getUser		  = f => getUser( this )
 	registerUser  = ( name, email, pass ) => registerUser( this, name, email, pass )
 	loginUser     = ( email, pass ) => loginUser( this.auth, email, pass )
-	updateUser	  = ( name, photoUrl ) => updateUser( this.auth, name, photoUrl, dispatch, setUserAction )
+	updateUser	  = userUpdates => updateUser( this, userUpdates )
 	logout		  = f => logoutUser( this.auth )
 	deleteUser	  = f => deleteUser( this.auth )
 
@@ -50,7 +48,10 @@ class Firebase {
 	// ///////////////////////////////
 
 	// Register user listener, if no user reset the app
-	init = f => listenForUserAndStartListeners( this, dispatch, setUserAction, resetApp )
+	// init = f => listenForUserAndStartListeners( this, dispatch, setUserAction, resetApp )
+	init = f => this.listeners.auth = listenUserLogin( this, dispatch, setUserAction, [
+		{ name: 'profile', listener: listenUserChanges, action: setUserAction }
+	] )
 
 	
 	

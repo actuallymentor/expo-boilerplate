@@ -21,7 +21,8 @@ class UserSettings extends Component {
 		this.state = {
 			loading: false,
 			user: props.user,
-			settings: props.settings
+			settings: props.settings,
+			passwordRequired: false
 		}
 	}
 
@@ -39,9 +40,21 @@ class UserSettings extends Component {
 	
 	}
 
+	// Sensitive input?
+	isSensitive = f => { 
+
+		const { user, passwordRequired } = this.state 
+		const { user: oldUser } = this.props
+
+		if( ( user.email != oldUser.email ) || user.newpassword ) return this.updateState( { passwordRequired: true } )
+
+		if( passwordRequired ) return this.updateState( { passwordRequired: false } )
+
+	}
+
 	// Input handlers
-	changeUser 		= ( key, value ) => this.updateState( { user: { ...this.state.user, [key]: value } } )
-	changeSettings 	= ( key, value ) => this.updateState( { settings: { ...this.state.settings, [key]: value } } )
+	changeUser 		= ( key, value ) => this.updateState( { user: { ...this.state.user, [key]: value } } ).then( this.isSensitive )
+	changeSetting 	= ( key, value ) => this.updateState( { settings: { ...this.state.settings, [key]: value } } )
 
 	// Save changes
 	saveChanges = async f => {
@@ -51,11 +64,11 @@ class UserSettings extends Component {
 		await this.updateState( { loading: true } )
 
 		try {
-			await app.updateUser( user.name, user.avatar )
+			await app.updateUser( user )
 		} catch( e ) {
 			catcher( e )
 		} finally {
-			await this.updateState( { loading: false } )
+			await this.updateState( { loading: false, passwordRequired: false } )
 		}
 
 	}
@@ -63,13 +76,13 @@ class UserSettings extends Component {
 
 	render() {
 
-		const { loading, user, settings } = this.state
+		const { loading, user, settings, passwordRequired } = this.state
 
-		if( loading ) return <Loading message={ loading } />
+		if( !user || loading ) return <Loading message={ loading } />
 
 		return <Container>
 			<Navigation title='User settings' />
-			<Settings user={ user } changeUser={ this.changeUser } settings={ settings } changeSettings={ this.changeSettings } saveChanges={ this.saveChanges } />
+			<Settings passwordRequired={ passwordRequired } user={ user } changeUser={ this.changeUser } settings={ settings } changeSetting={ this.changeSetting } saveChanges={ this.saveChanges } />
 		</Container>
 
 	}

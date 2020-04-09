@@ -1,19 +1,64 @@
+import { catcher } from '../helpers'
+import { dataFromSnap } from './helpers'
+import { resetApp } from '../../redux/actions/settingsActions'
+import { unregisterListeners, registerListeners } from './listeners'
+
+
+// ///////////////////////////////
+// Listeners
+// ///////////////////////////////
+
+// Listen to user authentication
+export const listenUserLogin = ( app, dispatch, action, listeners ) => {
+	// Listen to the user object
+	return app.auth.onAuthStateChanged( async user => {
+
+		// Register listeners if we are logged in
+		if( user ) {
+			registerListeners( app, dispatch, listeners )
+			return dispatch( action( await getUserProfile( app.db, user ) ) )
+		}
+
+		// Unregister listeners and reset app if we are not logged in
+		if( !user ) {
+			unregisterListeners( app.listeners )
+			return dispatch( resetApp( ) )
+		}
+
+	} )
+}
+
+// Listen to user changes
+export const listenUserChanges = ( app, dispatch, action ) => {
+
+	app.db.collection( 'users' ).doc( app.auth.currentUser.uid ).onSnapshot( doc => {
+
+		return dispatch( action( {
+			email: app.auth.currentUser.email,
+			...dataFromSnap( doc ) 
+		} ) )
+
+	} )
+
+}
+
+// ///////////////////////////////
+// User actions
+// ///////////////////////////////
+
 // Register a new user by email and password
 export const registerUser = async ( app, name, email, password ) => {
 
 	try {
 		// Create account
 		await app.auth.createUserWithEmailAndPassword( email, password )
-		// Get current user
-		const user = app.auth.currentUser
-		// Update profile to include name
-		await user.updateProfile( {
-			displayName: name
+
+		// Update profile to include name, this also triggers redux
+		await app.updateUser( {
+			name: name
 		} )
-		// Set user to app licat prop
-		app.user = app.auth.currentUser
 	} catch( e ) {
-		throw e
+		catcher( e )
 	}
 
 }
@@ -22,19 +67,39 @@ export const registerUser = async ( app, name, email, password ) => {
 export const loginUser = async ( auth, email, password ) => auth.signInWithEmailAndPassword( email, password )
 
 // Update the user profile and return the new user object to store
-export const updateUser = async ( auth, displayName, photoURL, dispatch, action ) => ( displayName || photoURL ) && auth.currentUser.updateProfile( {
-	...( displayName && { displayName: displayName } ),
-	...( photoURL && { photoURL: photoURL } )
-} )
-// Return the new user to redux
-.then( f => dispatch( action( {
-	email: auth.currentUser.email,
-	name: auth.currentUser.displayName,
-	avatar: auth.currentUser.profileUrl
-} ) ) )
+export const updateUser = async ( app, userUpdates ) => {
 
-// Get tehe current user
-export const getUser = app => app.user
+	const { uid, email, newpassword, currentpassword, ...updates } = userUpdates
+
+	try {
+		// If email change was requested, set to firebase auth object
+		if( email && currentpassword ) {
+			await app.loginUser( app.auth.currentUser.email, currentpassword )
+			await app.auth.currentUser.updateEmail( email )
+		}
+		if( newpassword && currentpassword ) {
+			await app.loginUser( app.auth.currentUser.email, currentpassword )
+			await app.auth.currentUser.updatePassword( newpassword )
+		}
+		// Set other properties to store
+		await app.db.collection( 'users' ).doc( app.auth.currentUser.uid ).set( {
+			...updates,
+			updated: Date.now()
+		}, { merge: true } )
+
+
+	} catch( e ) {
+		throw e
+	}
+
+}
+
+// Get user profile
+export const getUserProfile = async ( db, user ) => ( {
+	uid: user.uid,
+	email: user.email,
+	...( await db.collection( 'users' ).doc( user.uid ).get().then( doc => doc.data() ).catch( f => ( { } ) ) )
+} )
 
 // Logout
 export const logoutUser = auth => auth.signOut()
