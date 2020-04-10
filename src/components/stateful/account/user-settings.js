@@ -79,7 +79,7 @@ class UserSettings extends Component {
 		} catch( e ) {
 			catcher( e )
 		} finally {
-			await this.updateState( { loading: false, passwordRequired: false } )
+			await this.updateState( { user: {}, loading: false, passwordRequired: false } )
 		}
 
 	}

@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Visual
-import { TouchableOpacity, View, Animated, Switch } from 'react-native'
+import { TouchableOpacity, View, Animated, Switch, SafeAreaView } from 'react-native'
 import { Drawer, Portal, Appbar, withTheme, Surface, Text, StatusBar } from './generic'
 import { PanGestureHandler } from 'react-native-gesture-handler'
 
@@ -42,18 +42,21 @@ export const Menu = withTheme( ( { width, links, go, theme, toggle, pan, transla
 
 					{ /* Visual surface element */ }
 					<Surface elevation={ 1 } style={ { flex: 1 } }>
+						<SafeAreaView style={ { flex: 1, backgroundColor: theme.colors.surface } }>
 
-						{ /* Title */ }
-						<Drawer.Section title='Menu' style={ { height: '100%', marginBottom: 0 } }>
-						
-							{ /* Elements included from above */ }
-							{ links.map( ( { label, to, onPress } ) => <Drawer.Item key={ label+to } label={ label } onPress={ onPress ? onPress : f => go( to ) } /> ) }
+							{ /* Title */ }
+							<Drawer.Section title='Menu' style={ { height: '100%', marginBottom: 0 } }>
+							
+								{ /* Elements included from above */ }
+								{ links.map( ( { label, to, onPress } ) => <Drawer.Item key={ label+to } label={ label } onPress={ onPress ? onPress : f => go( to ) } /> ) }
 
-							{ /* Darkmode toggle */ }
-						    <DarkMode toggleDark={ toggleDark } theme={ theme } />
+								{ /* Darkmode toggle */ }
+							    <DarkMode toggleDark={ toggleDark } theme={ theme } />
 
-					    </Drawer.Section>
+						    </Drawer.Section>
+					    </SafeAreaView>
 					</Surface>
+				
 
 				</Animated.View>
 				

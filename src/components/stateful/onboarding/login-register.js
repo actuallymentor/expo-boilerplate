@@ -22,13 +22,13 @@ export default class LoginRegister extends Component {
 	onInput = ( key, value ) => this.updateState( { [key]: value } )
 
 	// Log/reg toggle
-	toggleAction = f => this.updateState( { action: this.state.action == 'login' ? 'register' : 'login' } )
+	toggleAction = action => this.updateState( { action: action || ( this.state.action == 'login' ? 'register' : 'login' ) } )
 
 	// Validate input
 	validate = f => {
 		const { action, email, password, name } = this.state
 		if( !email ) return 'Please fill in your email address'
-		if( !password ) return 'Please fill in your password'
+		if( action != 'recover' && !password ) return 'Please fill in your password'
 		if( action == 'register' && !name ) return 'Please fill in your name'
 		return false
 	}
@@ -48,6 +48,7 @@ export default class LoginRegister extends Component {
 		try {
 			if( action == 'login' ) await app.loginUser( email.trim(), password )
 			if( action == 'register' ) await app.registerUser( name.trim(), email.trim(), password )
+			if( action == 'recover' ) await app.resetPassword( email.trim() )
 			return history.push( '/user/settings' )
 		} catch( e ) {
 			log( e )

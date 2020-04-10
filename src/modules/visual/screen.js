@@ -7,7 +7,7 @@ export const setOrientation = async f => {
 
 	// Not web and developing?
 	if( Platform.OS != 'web' && process.env.NODE_ENV == 'development' ) {
-		await ScreenOrientation.lockAsync( ScreenOrientation.Orientation.PORTRAIT_DOWN )
+		// await ScreenOrientation.lockAsync( ScreenOrientation.Orientation.PORTRAIT_DOWN )
 		await ScreenOrientation.unlockAsync()
 	// Not web and production?
 	} else if ( Platform.OS != 'web' ) {

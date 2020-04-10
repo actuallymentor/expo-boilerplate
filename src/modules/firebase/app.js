@@ -17,7 +17,7 @@ import config from './config'
 
 // Functions
 import { listenForUserAndStartListeners, unregisterListeners, registerListeners } from './listeners'
-import { listenUserLogin, listenUserChanges, registerUser, loginUser, updateUser, logoutUser, deleteUser } from './user'
+import { listenUserLogin, listenUserChanges, registerUser, loginUser, updateUser, resetPassword, logoutUser, deleteUser } from './user'
 
 // ///////////////////////////////
 // Firebase manager class
@@ -42,6 +42,7 @@ class Firebase {
 	updateUser	  = userUpdates => updateUser( this, userUpdates )
 	logout		  = f => logoutUser( this.auth )
 	deleteUser	  = f => deleteUser( this.auth )
+	resetPassword = email => resetPassword( this.auth, email )
 
 	// ///////////////////////////////
 	// Initialisation

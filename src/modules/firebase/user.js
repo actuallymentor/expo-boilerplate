@@ -117,6 +117,9 @@ export const getUserProfile = async ( db, user ) => ( {
 	...( await db.collection( 'users' ).doc( user.uid ).get().then( doc => doc.data() ).catch( f => ( { } ) ) )
 } )
 
+// Recover password
+export const resetPassword = ( auth, email ) => auth.sendPasswordResetEmail( email )
+
 // Logout
 export const logoutUser = auth => auth.signOut()
 

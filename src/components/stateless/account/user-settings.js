@@ -12,7 +12,7 @@ export const Settings = ( { children, avatarSize=100, user={}, changeUser, setti
 			<Input label='email' value={ user.email } onChangeText={ t => changeUser( 'email', t ) } />
 			<Input secureTextEntry label='new password' value={ user.newpassword || '' } onChangeText={ t => changeUser( 'newpassword', t ) } />
 			{ passwordRequired && <React.Fragment>
-				<Input secureTextEntry label='Current password (required)' value={ user.currentpassword || '' } onChangeText={ t => changeUser( 'currentpassword', t ) } />
+				<Input secureTextEntry label='current password (required)' value={ user.currentpassword || '' } onChangeText={ t => changeUser( 'currentpassword', t ) } />
 			</React.Fragment> }
 			<Button onPress={ saveChanges }>Save changes</Button>
 		</Card>

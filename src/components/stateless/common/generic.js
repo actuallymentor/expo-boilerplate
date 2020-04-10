@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, StatusBar as Bar } from 'react-native'
+import { ScrollView, View, StatusBar as Bar, SafeAreaView } from 'react-native'
 import { Card as PaperCard, TextInput, Appbar, withTheme, ActivityIndicator, Title, Button as PaperButton } from 'react-native-paper'
 
 
@@ -21,12 +21,16 @@ export class Component extends React.Component {
 // Recyclable components
 // ///////////////////////////////
 // General app container
-export const Container = withTheme( ( { style, children, theme } ) => <View style={ {
-	flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', backgroundColor: theme.colors.background,
-	...style
-} }>
-	{ children }
-</View> )
+export const Container = withTheme( ( { style, children, theme } ) => <SafeAreaView style={ { flex: 1, backgroundColor: theme.colors.primary } }>
+
+	<View style={ {
+		flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', backgroundColor: theme.colors.background,
+		...style
+	} }>
+		{ children }
+	</View>
+	
+</SafeAreaView> )
 
 // Status bar
 export const StatusBar = withTheme( ( { theme } ) => <View>
