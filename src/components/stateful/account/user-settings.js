@@ -67,8 +67,8 @@ class UserSettings extends Component {
 			const file = await fetch( user.newavatar.uri )
 			user.newavatar.blob = await file.blob()
 
-			// If extension valid, add path to avatar
-			const path = `avatars/${ uid }-${ await getuuid() }.${ extension }`
+			// If extension valid, add path to avatar, extension is always jpg because of the image manipulator's jpeg output
+			const path = `avatars/${ uid }-${ await getuuid() }.jpg`
 			user.newavatar.path = path
 		}
 
