@@ -2,7 +2,20 @@
 
 Boilerplate is compatible with android, ios and web.
 
-Start with `npm run android/ios/web`.
+## Requirements
+
+- Node.js version 12 (use [nvm](https://github.com/nvm-sh/nvm))
+- [Expo client]( https://expo.io/tools )
+
+## Usage
+
+- Clone this repo
+- Install dependencies with `npm i`
+- Install `npm i -g expo-cli`
+- Log into expo with `expo login`
+- Start with `npm run android/ios/web`.
+
+To preview app on phone, use the Expo app.
 
 Testing: `npm test` based on Jest.
 
