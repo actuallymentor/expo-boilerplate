@@ -1,7 +1,7 @@
 import React from 'react'
-import { ScrollView, View, StatusBar as Bar, SafeAreaView } from 'react-native'
+import { ScrollView, View, StatusBar as Bar, SafeAreaView, Dimensions } from 'react-native'
 import { Card as PaperCard, TextInput, Appbar, withTheme, ActivityIndicator, Title, Button as PaperButton } from 'react-native-paper'
-
+const screen = Dimensions.get('window')
 
 // Optimised react root component
 export class Component extends React.Component {
@@ -57,7 +57,12 @@ export const Loading = ( { message } ) => <Container style={ { justifyContent: '
 </Container>
 
 export const Main = {
-	Center: ( { children, style } ) => <ScrollView style={ { flex: 1 } } contentContainerStyle={ { justifyContent: 'center', alignItems: 'center', flexDirection: 'column', ...style } }>{ children }</ScrollView>
+	Center: ( { children, style } ) => ( <ScrollView showsHorizontalScrollIndicator={ false } showsVerticalScrollIndicator={ false } style={ { flex: 1 } } contentContainerStyle={ { minHeight: screen.height, ...style } }>
+		<View style={ { minHeight: screen.height, justifyContent: 'center', flexDirection: 'column' } }>
+			{ children }
+		</View>
+	</ScrollView> ),
+	Top: ( { children, style } ) => ( <ScrollView style={ { flex: 1 } } contentContainerStyle={ {  ...style } }>{ children }</ScrollView> )
 }
 
 // ///////////////////////////////

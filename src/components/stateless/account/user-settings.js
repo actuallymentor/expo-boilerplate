@@ -4,7 +4,7 @@ import { Card, Main, Title, Input, Button } from '../common/generic'
 import ImagePicker from '../../stateful/common/image-picker'
 
 export const Settings = ( { children, avatarSize=100, user={}, changeUser, settings, changeSetting, saveChanges, passwordRequired } ) => <Main.Center>
-	<View style={ { paddingTop: avatarSize/2 } }>
+	<View style={ { paddingVertical: avatarSize/2 } }>
 		<Card style={ { paddingTop: 0 } } >
 			<ImagePicker image={ user.newavatar || user.avatar } size={ avatarSize } style={ { marginTop: -avatarSize/2, marginBottom: 20 } } onSelected={ image => changeUser( 'newavatar', image ) } />
 			<Title style={ { textAlign: 'center' } }>{ user.name || user.email }'s settings</Title>
