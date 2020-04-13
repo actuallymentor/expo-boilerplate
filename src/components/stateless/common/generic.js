@@ -38,8 +38,10 @@ export const StatusBar = withTheme( ( { theme } ) => <View>
 </View> )
 
 // Generic card
-export const Card = ( { containerStyle, style, children } ) => <View style={ { ...containerStyle, padding: 10, minWidth: 400, maxWidth: '100%', flexGrow: 0 } }>
-	<PaperCard elevation={ 2 } style={ { padding: 40, ...style } }>{ children }</PaperCard>
+export const Card = ( { containerStyle, style, children } ) => <View style={ { ...containerStyle, padding: 10, minWidth: 400, maxWidth: '100%' } }>
+	<PaperCard elevation={ 2 } style={ { padding: 40, ...style } }>
+		{ children }
+	</PaperCard>
 </View>
 
 // Generic text input
@@ -55,7 +57,7 @@ export const Loading = ( { message } ) => <Container style={ { justifyContent: '
 </Container>
 
 export const Main = {
-	Center: ( { children } ) => <ScrollView style={ { flex: 1 } } contentContainerStyle={ { flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column' } }>{ children }</ScrollView>
+	Center: ( { children, style } ) => <ScrollView style={ { flex: 1 } } contentContainerStyle={ { justifyContent: 'center', alignItems: 'center', flexDirection: 'column', ...style } }>{ children }</ScrollView>
 }
 
 // ///////////////////////////////
