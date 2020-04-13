@@ -67,7 +67,7 @@ export default class LoginRegister extends Component {
 
 		return <Container>
 			<Navigation title={ action } />
-			<Main.Center style={ { flex: 1, justifyContent: 'center', alignItems: 'center', alignSelf: 'stretch' } }>
+			<Main.Center>
 				<Login name={ name } email={ email } password={ password } onInput={ this.onInput } proceed={ this.onSubmit } toggle={ this.toggleAction } action={ action } />
 			</Main.Center>
 		</Container>
