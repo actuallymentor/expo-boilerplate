@@ -21,8 +21,6 @@ import { injectWebCss } from './src/modules/visual/style'
 // Push notifications
 import { askForPushPermissions } from './src/modules/push'
 
-// Firebase
-import firebase from './src/modules/firebase/app'
 
 // ///////////////////////////////
 // Main app ( web )
@@ -35,9 +33,6 @@ export default class App extends React.Component {
 		// Put upside down if developing on mobile, but not in browser
 		await setOrientation()
 		injectWebCss()
-
-		// Initialise firebase listeners
-		firebase.init()
 
 		// Initialise Sentry
 		// SentryInit()

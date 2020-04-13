@@ -6,8 +6,11 @@ import { connect } from 'react-redux'
 // Theming
 import { Provider as PaperProvider } from 'react-native-paper'
 
+// Firebase
+import firebase from '../modules/firebase/app'
+
 // Components
-import { Component } from '../components/stateless/common/generic'
+import { Component, Loading } from '../components/stateless/common/generic'
 
 // Routing
 import { Switch, Route, withRouter } from './router'
@@ -18,6 +21,15 @@ import UserSettings from '../components/stateful/account/user-settings'
 
 // Route maneger class
 class Routes extends Component {
+
+	state = {
+		init: false
+	}
+
+	componentDidMount = async () => {
+		await firebase.init()
+		return this.setState( { init: true } )
+	}
 
 	shouldComponentUpdate = ( nextProps, nextState ) => {
 
@@ -41,19 +53,21 @@ class Routes extends Component {
 	render() {
 
 		const { theme } = this.props
+		const { init } = this.state
 
 		{ /* Paper theme provider */ }
 		return <PaperProvider theme={ theme }>
+			{ !init && <Loading message='Loading your stuff' /> }
 			{ /* App router */ }
-				<Switch>
+			{ init && <Switch>
 
-					{ /* Account specific */ }
-					<Route path='/user/settings' component={ UserSettings } />
+				{ /* Account specific */ }
+				<Route path='/user/settings' component={ UserSettings } />
 
-					{ /* Home */ }
-					<Route path='/' component={ LoginRegistration } />
+				{ /* Home */ }
+				<Route path='/' component={ LoginRegistration } />
 
-				</Switch>
+			</Switch> }
 		</PaperProvider>
 
 	}

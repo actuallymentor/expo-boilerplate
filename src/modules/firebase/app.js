@@ -48,11 +48,14 @@ class Firebase {
 	// Initialisation
 	// ///////////////////////////////
 
-	// Register user listener, if no user reset the app
-	// init = f => listenForUserAndStartListeners( this, dispatch, setUserAction, resetApp )
-	init = f => this.listeners.auth = listenUserLogin( this, dispatch, setUserAction, [
-		{ name: 'profile', listener: listenUserChanges, action: setUserAction }
-	] )
+	// Register user listener in a promise wrapper that resolved when initial auth state is received
+	init = f => new Promise( resolve => {
+
+		this.listeners.auth = listenUserLogin( this, dispatch, setUserAction, resolve, [
+			{ name: 'profile', listener: listenUserChanges, action: setUserAction }
+		] )
+
+	} )
 
 	
 	

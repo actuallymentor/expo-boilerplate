@@ -9,21 +9,24 @@ import { unregisterListeners, registerListeners } from './listeners'
 // ///////////////////////////////
 
 // Listen to user authentication
-export const listenUserLogin = ( app, dispatch, action, listeners ) => {
+export const listenUserLogin = ( app, dispatch, action, resolve, listeners ) => {
 	// Listen to the user object
 	return app.auth.onAuthStateChanged( async user => {
 
 		// Register listeners if we are logged in
 		if( user ) {
 			registerListeners( app, dispatch, listeners )
-			return dispatch( action( await getUserProfile( app.db, user ) ) )
+			dispatch( action( await getUserProfile( app.db, user ) ) )
 		}
 
 		// Unregister listeners and reset app if we are not logged in
 		if( !user ) {
 			unregisterListeners( app.listeners )
-			return dispatch( resetApp( ) )
+			dispatch( resetApp( ) )
 		}
+
+		// Resolve when done
+		resolve()
 
 	} )
 }
