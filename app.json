@@ -28,7 +28,7 @@
       "buildNumber": "1.0.0"
     },
     "android": {
-      "<!-- TODO --> bundleIdentifier": "com.x.x",
+      "<!-- TODO --> package": "com.x.x",
       "versionCode": 1,
       "permissions": []
     },
