@@ -74,6 +74,8 @@ export default {
       "permissions": [],
       // "googleServicesFile": `./google-services${ conf.dev ? '-development' : '' }.json`,
       // adaptiveIcon: {
+        // Both layers must be sized at 108 x 108 dp.
+        // The inner 72 x 72 dp of the icon appears within the masked viewport.
       //   foregroundImage: "./assets/icon/acorn_transparent_bg_512.png",
       //   backgroundColor: "#808080"
       // },
