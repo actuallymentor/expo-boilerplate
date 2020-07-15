@@ -5,6 +5,14 @@ import 'firebase/auth'
 import 'firebase/storage'
 import 'firebase/functions'
 
+// Helpers
+import { dev, isWeb } from '../apis/platform'
+
+// Analytics
+import * as Analytics from 'expo-firebase-analytics'
+// If dev, keep analytics in dev
+if( !isWeb && dev ) Analytics.setDebugModeEnabled( true )
+
 // Redux
 import { store } from '../../redux/store'
 const { dispatch } = store
@@ -16,8 +24,8 @@ import { setUserAction } from '../../redux/actions/userActions'
 import config from './config'
 
 // Functions
-import { listenForUserAndStartListeners, unregisterListeners, registerListeners } from './listeners'
-import { listenUserLogin, listenUserChanges, registerUser, loginUser, updateUser, resetPassword, logoutUser, deleteUser } from './user'
+import { unregisterListeners, registerListeners } from './_listeners'
+import { listenUserLogin, listenUserChanges, registerUser, loginUser, updateUser, resetPassword, logoutUser, deleteUser } from './_user'
 
 // ///////////////////////////////
 // Firebase manager class
@@ -33,6 +41,7 @@ class Firebase {
 	func 		= this.fb.functions()
 	auth 		= this.fb.auth()
 	listeners 	= {}
+	analytics   = Analytics
 
 	// ///////////////////////////////
 	// User actions
@@ -43,6 +52,7 @@ class Firebase {
 	logout		  = f => logoutUser( this.auth )
 	deleteUser	  = f => deleteUser( this.auth )
 	resetPassword = email => resetPassword( this.auth, email )
+
 
 	// ///////////////////////////////
 	// Initialisation

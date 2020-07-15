@@ -1,7 +1,7 @@
 import { catcher } from '../helpers'
 import { dataFromSnap } from './helpers'
 import { resetApp } from '../../redux/actions/settingsActions'
-import { unregisterListeners, registerListeners } from './listeners'
+import { unregisterListeners, registerListeners } from './_listeners'
 
 
 // ///////////////////////////////

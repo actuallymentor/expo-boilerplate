@@ -19,7 +19,7 @@ export default {
     "slug": "expo-boilerplate",
     "privacy": "public",
     "version": `${conf.version}.0.0`,
-    "scheme": "", // ⚠️ appname # Will be used as appname://
+    "scheme": conf.bundle, // ⚠️ appname # Will be used as appname://
 
     // Cross platform config
     "platforms": [

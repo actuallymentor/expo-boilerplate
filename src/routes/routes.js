@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { Provider as PaperProvider } from 'react-native-paper'
 
 // Firebase
-import firebase from '../modules/firebase/app'
+import app from '../modules/firebase/app'
 
 // Components
 import { Component, Loading } from '../components/stateless/common/generic'
@@ -27,7 +27,7 @@ class Routes extends Component {
 	}
 
 	componentDidMount = async () => {
-		await firebase.init()
+		await app.init()
 		return this.setState( { init: true } )
 	}
 
@@ -44,6 +44,9 @@ class Routes extends Component {
 		if( pathname != '/' && !user ) history.push( '/' )
 		// If logged in but at home => go to profile
 		if( pathname == '/' && user ) history.push( '/user/settings' )
+
+		// analytics
+		if( pathname ) app.analytics.setCurrentScreen( pathname ).catch( f => f )
 
 		// On prop or state chang, always update
 		return true

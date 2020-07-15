@@ -24,6 +24,7 @@ Testing: `npm test` based on Jest.
 Based on your app you will have to edit:
 
 - `modules/push.js` to implement `savePushToken` based on your needs
+- Make sure to add firebase configs in app config to enable analytics
 
 ## While developing
 

@@ -1,18 +1,26 @@
+import { Alert as NativeAlert, YellowBox } from 'react-native'
+import { dev, isWeb, isCI } from './apis/platform'
+import { v4 as uuidv4 } from 'uuid'
+import * as Random from 'expo-random'
+import * as Linking from 'expo-linking'
+
 // ///////////////////////////////
 // Visual
 // ///////////////////////////////
-
-import { Alert as NativeAlert } from 'react-native'
-
 export const Dialogue = ( title, message, options=[ { text: 'ok', onPress: f => Promise.resolve() } ] ) => new Promise( resolve => {
 
 	// Option has text and onpress
-	NativeAlert.alert(
+	if( !isWeb ) NativeAlert.alert(
 		title,
 		message,
 		options.map( option => ( { ...option, onPress: f => option.onPress && option.onPress().then( res => resolve( res ) ) } ) ),
 		{ cancelable: true }
 	 )
+
+	if( isWeb ) {
+		if( confirm( `${title}\n\n${message}` ) ) options[0].onPress().then( resolve )
+		else resolve()
+	}
 
 } )
 
@@ -23,26 +31,118 @@ export const capitalize = string => string ? string.charAt(0).toUpperCase() + st
 // ///////////////////////////////
 // Debugging
 // ///////////////////////////////
-export const log = msg => {
-	if( process.env.NODE_ENV == 'development' ) console.log( msg )
+
+export const log = ( msg, data ) => {
+	if( dev ) console.log( msg, data || '' )
 }
 
 export const error = msg => {
-	if( process.env.NODE_ENV == 'development' ) {
+	if( dev ) {
 		console.log( msg )
 		console.trace()
 	}
 }
 
 export const catcher = e => {
-	log( e )
+	error( e )
 	// throw to sentry
 	throw e
 }
 
+export const ignoreErrors = arr => YellowBox.ignoreWarnings( arr )
+
 // ///////////////////////////////
 // Generators
 // ///////////////////////////////
-import { v4 as uuidv4 } from 'uuid'
-import * as Random from 'expo-random'
-export const getuuid = async f => uuidv4( { random: await Random.getRandomBytesAsync( 16 ) } )
+export const getuid = async f => uuidv4( { random: await Random.getRandomBytesAsync( 16 ) } )
+
+export const sendEmail = ( to, subject, body ) => Linking.openURL( `mailto:${to}?subject=${subject}&body=${body}` )
+
+// ///////////////////////////////
+// Data manipulation
+// ///////////////////////////////
+export const uniqueByProp = ( array, propToFilterBy ) => {
+
+	const matches = []
+
+	return array.filter( item => {
+
+		const valueThatShouldBeUnique = item[ propToFilterBy ]
+
+		// If already found, exclude
+		if( matches.includes( valueThatShouldBeUnique ) ) return false
+
+		// Otherwise register and keep it
+		matches.push( valueThatShouldBeUnique )
+		return true
+
+	} )
+
+}
+
+
+// ///////////////////////////////
+// Dates
+// ///////////////////////////////
+
+// Baselines
+const msInADay = 86400000
+const today = new Date()
+
+// profiling the 1st of jan
+const oneJan = new Date( today.getFullYear(), 0, 1 )
+const oneJanDayType = oneJan.getDay()
+
+export const timestampToHuman = ms => new Date( ms ).toString().match( /([a-zA-Z]* )([a-zA-Z]* )(\d+)/ )[0]
+// Give timestamp of now, except in CI
+export const timestampToTime = ms => isCI ? '12:11' : new Date( ms || Date.now() ).toString().match( /\d{1,2}:\d{1,2}/ )[0]
+
+// Weeks are defined by the number of 7 day increments that have elapsed
+export const weekNumber = f => {
+
+    const daysPassedSinceOneJan = Math.floor( ( today.getTime() - oneJan.getTime() ) / msInADay )
+
+    // Compose week number
+    const weekNumber = Math.ceil( ( daysPassedSinceOneJan + oneJanDayType ) / 7 )
+
+    return weekNumber
+}
+
+// Calculating the distance until the next day of a week
+export const distanceToNextDayType = ( targetDay, baseline ) => {
+
+	// Find the index of the target day, where sunday is 0 because javascript
+	const week = [ 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday' ]
+	const targetIndex = week.indexOf( targetDay )
+
+	// If parameter is not a day, break
+	if( targetIndex == -1 ) throw 'Faulty day name'
+
+	// Get the index of today relative to the local device
+	const dayIndex = baseline ? baseline.getDay() : today.getDay()
+
+	const distance = targetIndex - dayIndex
+
+	// If the distance is negative than the day is in the past and we want next week's day of that type
+	if( distance < 0 ) return distance + 7
+
+	// If the distance is positive, the day is in the future and we're good
+	return distance
+
+}
+
+export const dateOfNext = day => {
+
+	// Generate midnight today ( the first second of today, whic is technically midnight yesterday )
+	const startofToday = new Date( today )
+	startofToday.setHours( 0, 0, 0, 0 )
+	
+	// Next day of the type input into the function, also it's first second of that day
+	const nextDayOfSuppliedType = new Date()
+	// Set the next day of that typed based on day of the month
+	nextDayOfSuppliedType.setDate( startofToday.getDate() + distanceToNextDayType( day ) )
+	nextDayOfSuppliedType.setHours( 0, 0, 0, 0 )
+
+	// console.log( nextDayOfSuppliedType )
+	return new Date( nextDayOfSuppliedType )
+}

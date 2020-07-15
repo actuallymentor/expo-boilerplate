@@ -1,5 +1,5 @@
 // Sentry debugging and Amplitude tracking
-// import SentryInit from './src/modules/sentry'
+// import SentryInit from './src/modules/sentry/sentry'
 
 // React
 import React from 'react'
@@ -18,9 +18,16 @@ import { Loading } from './src/components/stateless/common/generic'
 import { setOrientation } from './src/modules/visual/screen'
 import { injectWebCss } from './src/modules/visual/style'
 
-// Push notifications
-import { askForPushPermissions } from './src/modules/push'
+// Udates
+import { updateIfAvailable } from './src/modules/apis/updates'
 
+// Devving
+import { ignoreErrors } from './src/modules/helpers'
+
+// Firebase dependency fix, if we ever switch to Firbease native this can be removed
+import { decode, encode } from 'base-64'
+if( !global.btoa ) global.btoa = encode
+if( !global.atob ) global.atob = decode
 
 // ///////////////////////////////
 // Main app ( web )
@@ -30,9 +37,14 @@ export default class App extends React.Component {
 	
 	async componentDidMount() {
 
+		ignoreErrors( [ 'Setting a timer' ] )
+
 		// Put upside down if developing on mobile, but not in browser
 		await setOrientation()
 		injectWebCss()
+
+		// Check for updates, ask user if they want to restart
+		await updateIfAvailable()
 
 		// Initialise Sentry
 		// SentryInit()
