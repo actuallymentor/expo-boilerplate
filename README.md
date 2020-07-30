@@ -4,7 +4,7 @@ Boilerplate is compatible with android, ios and web.
 
 ## Requirements
 
-- Node.js version 12 (use [nvm](https://github.com/nvm-sh/nvm))
+- Node.js version 14 (use [nvm](https://github.com/nvm-sh/nvm))
 - [Expo client]( https://expo.io/tools )
 
 ## Usage
