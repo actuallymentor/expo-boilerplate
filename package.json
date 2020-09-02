@@ -12,7 +12,8 @@
     "stage": "export $(grep '^[a-zA-Z_]*=.*' .env | xargs) && expo publish -c --release-channel staging",
     "compile:android": "export $(grep '^[a-zA-Z_]*=.*' .env | xargs) && expo build:android",
     "compile:ios": "export $(grep '^[a-zA-Z_]*=.*' .env | xargs) && expo build:ios",
-    "publish": "export $(grep '^[a-zA-Z_]*=.*' .env | xargs) && expo publish",
+    "compile:web": "export $(grep '^[a-zA-Z_]*=.*' .env.production | xargs) && expo build:web",
+    "publish": "export $(grep '^[a-zA-Z_]*=.*' .env | xargs) && expo publish && expo build:web",
     "bust": "npm cache clean --force && rm -fr $TMPDIR/metro* && watchman watch-del-all",
     "reset": "npm run bust && rm package-lock.json && rm -rf node_modules && npm i"
   },
