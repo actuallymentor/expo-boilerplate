@@ -1,0 +1,37 @@
+// Write: create, update, delete
+// Read: get, list
+
+rules_version = '2'
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Disallow all by default
+    match /{document=**} {
+      allow read, write: if false
+    }
+
+
+    // ///////////////////////////////
+    // Public facing data
+    // ///////////////////////////////
+    match /users/{userUid} {
+      // Write own, read others if logged in
+      allow write: if request.auth.uid == userUid
+      allow read: if true // Needed for handle checks
+    }
+    match /userMeta/{userUid} {
+      // Write own, read others if logged in
+      allow write: if request.auth.uid == userUid
+      allow read: if request.auth.uid != null
+    }
+
+    // ///////////////////////////////
+    // Private data
+    // ///////////////////////////////
+    match /settings/{userUid} {
+      // Write own, read others if logged in
+      allow write, read: if request.auth.uid == userUid
+    }
+
+  }
+}

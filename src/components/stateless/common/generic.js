@@ -41,7 +41,7 @@ export const Subheading = ( { style, ...props } ) => <PaperSubheading style={ { 
 
 // Generic card
 export const Card = ( { containerStyle, style, children } ) => <View style={ { ...containerStyle, paddingVertical: 10, width: 500, maxWidth: '100%' } }>
-	<PaperCard elevation={ 2 } style={ { padding: 40, maxWidth: '100%', ...style } }>
+	<PaperCard elevation={ 2 } style={ { padding: 30, maxWidth: '100%', ...style } }>
 		{ children }
 	</PaperCard>
 </View>
@@ -101,11 +101,17 @@ export const Link = withTheme( ( { style, theme, children, to, onPress, ...props
 // ///////////////////////////////
 
 // Generic text input
-export const Input = withTheme( ( { theme, style, info, hideInfo=false, error, onSubmit, multiline, iconSize=30, value, ...props } ) => {
+export const Input = withTheme( ( { theme, style, info, hideInfo=false, error, onSubmit, multiline, iconSize=30, value, ref=f=>f, ...props } ) => {
 
+	// Internal variables
 	const gutter = multiline ? 200 : undefined
 	const [ showInfo, setInfo ] = useState( false )
 	const [ height, setHeight ] = useState( gutter )
+
+	// Styles
+	const inputStyles = { ...( height && { height: height } ), minHeight: 50, marginVertical: 10, backgroundColor: multiline ? theme.colors.background : 'none', ...style }
+
+	// Internal helpers
 	const adjustHeight = ( { nativeEvent } ) => {
 		if( multiline ) setHeight( nativeEvent?.contentSize?.height + ( isIos ? 35 : 0 ) )
 	}
@@ -113,11 +119,12 @@ export const Input = withTheme( ( { theme, style, info, hideInfo=false, error, o
 		if( nativeEvent.key == 'Enter' ) return onSubmit()
 	}
 
+
 	return <View>
 		<View style={ { position: 'relative' } }>
 
 			{ /* The actual input */ }
-			<TextInput onKeyPress={ onSubmit ? manageEnter : f => f } value={ value || '' } onContentSizeChange={ adjustHeight } multiline={ multiline } mode='flat' dense={ false } { ...props } style={ { ...( height && { height: height } ), minHeight: 50, marginVertical: 10, backgroundColor: multiline ? theme.colors.background : 'none', ...style } } />
+			<TextInput onPress={ f => console.log( 'Focus' ) } ref={ ref } onKeyPress={ onSubmit ? manageEnter : f => f } value={ value || '' } onContentSizeChange={ adjustHeight } multiline={ multiline } mode='flat' dense={ false } { ...props } style={ inputStyles } />
 
 			{ /* The info icon */ }
 			{ info && ( !hideInfo || ( hideInfo && !value ) ) && <TouchableOpacity tabindex={ -1 } style={ { position: 'absolute', right: 0, top: 0, bottom: 0, justifyContent: 'center' } } onPress={ f => setInfo( !showInfo ) }>
@@ -201,7 +208,7 @@ export const Main = {
 }
 
 // General app container
-const bgStyles = { position: 'absolute', top: 0, left: 0, minWidth: '100%', minHeight: '100%' }
+const bgStyles = { position: 'absolute', top: 0, left: 0, bottom: 0, minWidth: '100%', minHeight: '100%' }
 export const Container = withTheme( ( { style, children, theme, Background } ) => <KeyboardAvoidingView style={ { flex: 1 } } behavior={ isIos ? 'padding' : 'height' } >
 		<SafeAreaView style={ { flex: 1, width: '100%', backgroundColor: theme.colors.primary } }>
 
@@ -209,7 +216,7 @@ export const Container = withTheme( ( { style, children, theme, Background } ) =
 			flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', backgroundColor: theme.colors.background, overflow: 'hidden',
 			...style
 		} }>
-			{ Background && ( isWeb ? <Image style={ bgStyles } source={ Background } /> : <Background style={ bgStyles } /> ) }
+			{ Background && ( isWeb ? <Image style={ bgStyles } source={ Background } /> : <Background height={ '101%' } preserveAspectRatio="xMidYMid slice" style={ bgStyles } /> ) }
 			{ Background && <View style={ { position: 'absolute', left: 0, top: 0, right: 0, bottom: 0, backgroundColor: Color( theme.colors.background ).alpha( 0.9 ) } } /> }
 			{ children }
 		</View>

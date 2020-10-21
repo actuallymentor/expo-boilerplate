@@ -1,8 +1,22 @@
 // ///////////////////////////////
 // Application config
 // ///////////////////////////////
-// The google json/plist are for fire base native configs
-// you'll also need to set the web.config.firebase
+// The google json/plist are for fireebase native configs
+require('dotenv').config()
+
+
+// Firebase config
+const { FIREBASE_apiKey, FIREBASE_authDomain, FIREBASE_databaseURL, FIREBASE_projectId, FIREBASE_storageBucket, FIREBASE_messagingSenderId, FIREBASE_appId, FIREBASE_measurementId } = process.env
+const firebaseConfig = {
+  apiKey: FIREBASE_apiKey,
+  authDomain: FIREBASE_authDomain,
+  databaseURL: FIREBASE_databaseURL,
+  projectId: FIREBASE_projectId,
+  storageBucket: FIREBASE_storageBucket,
+  messagingSenderId: FIREBASE_messagingSenderId,
+  appId: FIREBASE_appId,
+  measurementId: FIREBASE_measurementId
+}
 
 // Vars
 const conf = {
@@ -86,9 +100,38 @@ export default {
     // ///////////////////////////////
     web: {
       config: {
-        // firebase: firebaseConfig
+        firebase: firebaseConfig
       }
     },
+
+    //////////////////
+    // Sentry config
+    //////////////////
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps"
+        }
+      ]
+    },
+
+    // Metro config
+    "packagerOpts": {
+      "config": "metro.config.js",
+      "sourceExts": [
+        "expo.ts",
+        "expo.tsx",
+        "expo.js",
+        "expo.jsx",
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "json",
+        "wasm",
+        "svg"
+      ]
+    }
     
   }
 }
