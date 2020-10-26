@@ -1,5 +1,5 @@
 import * as Sentry from 'sentry-expo'
-import { SENTRY_DSN } from '@env'
+import { SENTRY_DSN } from 'reactk-native-dotenv'
 
 const SentryInit = f => {
 	if( SENTRY_DSN ) Sentry.init( {

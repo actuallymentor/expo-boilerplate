@@ -1,4 +1,4 @@
-import { catcher } from '../helpers'
+import { catcher, log } from '../helpers'
 import { dataFromSnap } from './helpers'
 import { resetApp } from '../../redux/actions/settingsActions'
 import { unregisterListeners, registerListeners } from './_listeners'
@@ -9,41 +9,47 @@ import { unregisterListeners, registerListeners } from './_listeners'
 // ///////////////////////////////
 
 // Listen to user authentication
-export const listenUserLogin = ( app, dispatch, action, resolve, listeners ) => {
+export const listenUserLogin = ( app, dispatch, action, listeners ) => new Promise( resolve => {
 	// Listen to the user object
-	return app.auth.onAuthStateChanged( async user => {
+	const authListener = app.auth.onAuthStateChanged( async user => {
 
-		// Register listeners if we are logged in
-		if( user ) {
-			registerListeners( app, dispatch, listeners )
-			dispatch( action( await getUserProfile( app.db, user ) ) )
+		try {
+
+			// Register listeners if we are logged in
+			if( user ) {
+				registerListeners( app, dispatch, listeners )
+
+				const profile = await getUserProfile( app.db, user )
+				await dispatch( action( profile ) )
+				
+			}
+
+			// Unregister listeners and reset app if we are not logged in
+			if( !user ) {
+				unregisterListeners( app.listeners )
+				await dispatch( resetApp( ) )
+			}
+
+			// Resolve when done
+			resolve( authListener )
+
+		} catch( e ) {
+			log( 'Auth listener error', e )
+			alert( 'Authentication error' )
 		}
-
-		// Unregister listeners and reset app if we are not logged in
-		if( !user ) {
-			unregisterListeners( app.listeners )
-			dispatch( resetApp( ) )
-		}
-
-		// Resolve when done
-		resolve()
 
 	} )
-}
+} ) 
 
 // Listen to user changes
-export const listenUserChanges = ( app, dispatch, action ) => {
+export const listenUserChanges = ( app, dispatch, action ) => app.db.collection( 'users' ).doc( app.auth.currentUser.uid ).onSnapshot( doc => {
 
-	app.db.collection( 'users' ).doc( app.auth.currentUser.uid ).onSnapshot( doc => {
+	return dispatch( action( {
+		email: app.auth.currentUser.email,
+		...dataFromSnap( doc ) 
+	} ) )
 
-		return dispatch( action( {
-			email: app.auth.currentUser.email,
-			...dataFromSnap( doc ) 
-		} ) )
-
-	} )
-
-}
+} )
 
 // ///////////////////////////////
 // User actions
@@ -72,18 +78,23 @@ export const loginUser = async ( auth, email, password ) => auth.signInWithEmail
 // Update the user profile and return the new user object to store
 export const updateUser = async ( app, userUpdates ) => {
 
-	let { uid, email, newpassword, currentpassword, newavatar, avatar, ...updates } = userUpdates
+	let { uid, email, newpassword, currentpassword, newavatar, oldavatar, ...updates } = userUpdates
+	const { currentUser } = app.auth
 	
 	try {
 
+		// If this is a sensitive change, reauthenticate
+		if( currentpassword ) {
+			const { EmailAuthProvider } = app.Auth
+			await currentUser.reauthenticateWithCredential( EmailAuthProvider.credential( currentUser.email, currentpassword ) )
+		}
+
 		// If email change was requested, set to firebase auth object
 		if( email && currentpassword ) {
-			await app.loginUser( app.auth.currentUser.email, currentpassword )
-			await app.auth.currentUser.updateEmail( email )
+			await currentUser.updateEmail( email )
 		}
 		if( newpassword && currentpassword ) {
-			await app.loginUser( app.auth.currentUser.email, currentpassword )
-			await app.auth.currentUser.updatePassword( newpassword )
+			await currentUser.updatePassword( newpassword )
 		}
 
 		// If new file was added
@@ -97,11 +108,11 @@ export const updateUser = async ( app, userUpdates ) => {
 				path: newavatar.path
 			}
 			// Delete old file
-			if( avatar ) await app.storage.child( avatar.path ).delete()
+			if( oldavatar ) await app.storage.child( oldavatar.path ).delete().catch( e => log( e ) )
 		}
 
 		// Set other properties to store
-		await app.db.collection( 'users' ).doc( app.auth.currentUser.uid ).set( {
+		await app.db.collection( 'users' ).doc( currentUser.uid ).set( {
 			...updates,
 			updated: Date.now()
 		}, { merge: true } )
@@ -124,7 +135,35 @@ export const getUserProfile = async ( db, user ) => ( {
 export const resetPassword = ( auth, email ) => auth.sendPasswordResetEmail( email )
 
 // Logout
-export const logoutUser = auth => auth.signOut()
+export const logoutUser = async app => {
+	const { auth, listeners } = app
+	unregisterListeners( listeners )
+	await auth.signOut()
+}
 
 // Delete
-export const deleteUser = auth => auth.currentUser.delete()
+export const deleteUser = async ( app, password ) => {
+
+	const { auth, db, FieldValue } = app
+	const { currentUser } = auth
+	const { EmailAuthProvider } = app.Auth
+
+	try {
+
+		await currentUser.reauthenticateWithCredential( EmailAuthProvider.credential( currentUser.email, password ) )
+
+		await Promise.all( [
+			db.collection( 'settings' ).doc( currentUser.uid ).delete(),
+			db.collection( 'users' ).doc( currentUser.uid ).delete(),
+			db.collection( 'userMeta' ).doc( currentUser.uid ).delete(),
+			db.collection( 'specialPowers' ).doc( currentUser.uid ).delete(),
+		] )
+
+		await auth.currentUser.delete()
+
+	} catch( e ) {
+		log( 'Deletion error: ', e )
+		throw e.message
+	}
+
+} 

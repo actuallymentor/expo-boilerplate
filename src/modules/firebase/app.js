@@ -22,6 +22,7 @@ import { setUserAction } from '../../redux/actions/userActions'
 
 // Config
 import config from './config'
+import * as Network from 'expo-network'
 
 // Functions
 import { unregisterListeners, registerListeners } from './_listeners'
@@ -41,7 +42,9 @@ class Firebase {
 	func 		= this.fb.functions()
 	auth 		= this.fb.auth()
 	listeners 	= {}
-	analytics   = Analytics
+	FieldValue  = firebase.firestore.FieldValue
+	Auth 		= firebase.auth
+	analytics  	= Analytics
 
 	// ///////////////////////////////
 	// User actions
@@ -49,9 +52,17 @@ class Firebase {
 	registerUser  = ( name, email, pass ) => registerUser( this, name, email, pass )
 	loginUser     = ( email, pass ) => loginUser( this.auth, email, pass )
 	updateUser	  = userUpdates => updateUser( this, userUpdates )
-	logout		  = f => logoutUser( this.auth )
-	deleteUser	  = f => deleteUser( this.auth )
+	logout		  = f => logoutUser( this )
+	deleteUser	  = password => deleteUser( this, password )
 	resetPassword = email => resetPassword( this.auth, email )
+
+	// Helpers
+	isOnline = f => Network.getNetworkStateAsync().then( ( { isInternetReachable } ) => isInternetReachable ).catch( f => false )
+
+	// ///////////////////////////////
+	// Analytics
+	// ///////////////////////////////
+	analyticsSetScreen = path => this.analytics && this.analytics.setCurrentScreen( path ).catch( f => f )
 
 
 	// ///////////////////////////////
@@ -59,13 +70,16 @@ class Firebase {
 	// ///////////////////////////////
 
 	// Register user listener in a promise wrapper that resolved when initial auth state is received
-	init = f => new Promise( resolve => {
+	init = async history => {
 
-		this.listeners.auth = listenUserLogin( this, dispatch, setUserAction, resolve, [
+		// Keep a reference to the history object
+		if( history ) this.history = history
+
+		this.listeners.auth = await listenUserLogin( this, dispatch, setUserAction, [
 			{ name: 'profile', listener: listenUserChanges, action: setUserAction }
 		] )
 
-	} )
+	}
 
 	
 	

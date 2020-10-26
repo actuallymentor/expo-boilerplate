@@ -40,7 +40,7 @@
     "expo-firebase-analytics": "~2.5.1",
     "expo-image-manipulator": "~8.3.0",
     "expo-image-picker": "~9.1.1",
-    "expo-network": "~2.3.0",
+    "expo-network": "^2.3.0",
     "expo-permissions": "~9.3.0",
     "expo-random": "~9.0.0",
     "expo-screen-orientation": "~2.0.0",
@@ -68,7 +68,8 @@
   "devDependencies": {
     "jest": "^26.6.1",
     "jest-expo": "^39.0.0",
-    "react-native-dotenv": "^2.4.2",
+    "jest-svg-transformer": "^1.0.0",
+    "react-native-dotenv": "0.2.0",
     "react-test-renderer": "^17.0.1",
     "redux-logger": "^3.0.6"
   },

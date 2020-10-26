@@ -1,7 +1,7 @@
 {
   "projects": {
-    "default": "project-staging-id",
-    "staging": "project-staging-id",
+    "default": "expo-boilerplate-temp",
+    "development": "expo-boilerplate-temp",
     "production": "project-production-id"
   }
 }

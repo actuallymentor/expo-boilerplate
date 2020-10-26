@@ -30,6 +30,7 @@ export default {
 
     // App meta
     "name": "Expo Boilerplate",
+    description: "A boilerplate for cross platform expo apps",
     "slug": "expo-boilerplate",
     "privacy": "public",
     "version": `${conf.version}.0.0`,
