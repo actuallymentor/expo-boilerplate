@@ -73,7 +73,7 @@ export default {
       "supportsTablet": true,
       "bundleIdentifier": conf.bundle,
       "buildNumber": `${conf.version}.0.0`,
-      // "googleServicesFile": `./GoogleService-Info${ conf.dev ? '-development' : '' }.plist`,
+      "googleServicesFile": `./GoogleService-Info${ conf.dev ? '-development' : '' }.plist`,
       // infoPlist: {
       //   NSCameraUsageDescription: "Camera permission is used to take a new photo to use as your profile picture.",
       // },
@@ -86,7 +86,7 @@ export default {
       "package": conf.bundle,
       "versionCode": conf.version, // ⚠️ Update on build
       "permissions": [],
-      // "googleServicesFile": `./google-services${ conf.dev ? '-development' : '' }.json`,
+      "googleServicesFile": `./google-services${ conf.dev ? '-development' : '' }.json`,
       // adaptiveIcon: {
         // Both layers must be sized at 108 x 108 dp.
         // The inner 72 x 72 dp of the icon appears within the masked viewport.

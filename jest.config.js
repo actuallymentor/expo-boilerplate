@@ -23,26 +23,26 @@ module.exports = {
 	testPathIgnorePatterns: ['lib/', 'node_modules/'],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     testEnvironment: 'node',
-	"projects": [
+	projects: [
 		{
-			"preset": "jest-expo/ios",
+			preset: "jest-expo/ios",
 			clearMocks: true,
 			transform: transformers,
-			"transformIgnorePatterns": [ `${expoTransforms}${customTransforms}` ],
+			transformIgnorePatterns: [ `${expoTransforms}${customTransforms}` ],
 			setupFilesAfterEnv: universalSetup
 		},
 		{
-			"preset": "jest-expo/android",
+			preset: "jest-expo/android",
 			clearMocks: true,
 			transform: transformers,
-			"transformIgnorePatterns": [ `${expoTransforms}${customTransforms}` ],
+			transformIgnorePatterns: [ `${expoTransforms}${customTransforms}` ],
 			setupFilesAfterEnv: universalSetup
 		},
 		{
-			"preset": "jest-expo/web",
+			preset: "jest-expo/web",
 			clearMocks: true,
 			transform: transformers,
-			"transformIgnorePatterns": [ `${expoTransforms}${customTransforms}` ],
+			transformIgnorePatterns: [ `${expoTransforms}${customTransforms}` ],
 			setupFilesAfterEnv: [ webMocks,...universalSetup ],
 			moduleNameMapper: { ...mockSvgs }
 		}

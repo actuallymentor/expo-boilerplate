@@ -7,10 +7,40 @@ Boilerplate is compatible with android, ios and web.
 - Node.js version 14 (use [nvm](https://github.com/nvm-sh/nvm))
 - [Expo client]( https://expo.io/tools )
 
-## Usage
+## Setup
+
+This setup assumes you have 2 firebase projects, one for development and one for production.
 
 - Clone this repo
-- Install dependencies with `npm i`
+- Run `npm i `
+- Run `create 2 firebase projects`
+- Add local secret files (`firebase>project>settings>general>your apps>download`)
+    + ./firebase-staging.json
+    + ./firebase-production.json
+    + google-services.json
+    + google-services-development.json
+    + GoogleService-Info.plist
+    + GoogleService-Info-development.plist
+- Configure local `.env` (see environment variables section)
+- Configure remote secrets in Github
+    + DOTENV_PRODUCTION
+    + DOTENV_DEVELOPMENT
+    + GOOGLE_SERVICES_JSON
+    + GOOGLE_SERVICES_PLIST
+    + EXPO_USERNAME
+    + EXPO_PASSWORD
+    + FIREBASE_TOKEN
+- Configure firebase projects in `./.firebaserc`
+- Create 2 branches (both have GH actions)
+    + master
+    + development
+- ( optional ) edit `app.config.js`
+    + Custom icon
+    + Custom name/slug
+    + Custom splash background color
+
+## Usage
+
 - Install `npm i -g expo-cli`
 - Log into expo with `expo login`
 - Start with `npm run android/ios/web`.
