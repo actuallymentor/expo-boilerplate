@@ -19,6 +19,8 @@ const { dispatch } = store
 
 // Actions
 import { setUserAction } from '../../redux/actions/userActions'
+import { setSettingsAction } from '../../redux/actions/settingsActions'
+
 
 // Config
 import config from './config'
@@ -27,6 +29,7 @@ import * as Network from 'expo-network'
 // Functions
 import { unregisterListeners, registerListeners } from './_listeners'
 import { listenUserLogin, listenUserChanges, registerUser, loginUser, updateUser, resetPassword, logoutUser, deleteUser } from './_user'
+import { updateSettings, listenSettings, setLocalTimeToSettings } from './_settings'
 
 // ///////////////////////////////
 // Firebase manager class
@@ -56,6 +59,11 @@ class Firebase {
 	deleteUser	  = password => deleteUser( this, password )
 	resetPassword = email => resetPassword( this.auth, email )
 
+	// ///////////////////////////////
+	// Settings
+	// ///////////////////////////////
+	updateSettings = settings => updateSettings( this, settings )
+
 	// Helpers
 	isOnline = f => Network.getNetworkStateAsync().then( ( { isInternetReachable } ) => isInternetReachable ).catch( f => false )
 
@@ -76,7 +84,9 @@ class Firebase {
 		if( history ) this.history = history
 
 		this.listeners.auth = await listenUserLogin( this, dispatch, setUserAction, [
-			{ name: 'profile', listener: listenUserChanges, action: setUserAction }
+			{ name: 'profile', listener: listenUserChanges, action: setUserAction },
+			{ name: 'settings', listener: listenSettings, action: setSettingsAction }
+
 		] )
 
 	}

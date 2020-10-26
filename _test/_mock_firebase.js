@@ -1,4 +1,4 @@
-import { user, inbox, nutshell, settings } from '../src/modules/dummy-data'
+import { user, settings } from '../src/modules/dummy-data'
 class Firebase {
 
 	// Helpers
@@ -18,31 +18,6 @@ class Firebase {
 	// Settings
 	// ///////////////////////////////
 	updateSettings = async f => settings
-	handleIsAvailable = async f => true
-
-	// ///////////////////////////////
-	// nutshells
-	// ///////////////////////////////
-	createNutshell     = async f => nutshell
-	updateNutshell     = async f => nutshell
-	deleteNutshell 	   = async f => nutshell
-	getNutshellsOfUser = async f => [ nutshell ]
-	getNutshellByUid   = async f => nutshell
-	markNutshellRead   = async f => nutshell
-	reportNutshell	   = async f => nutshell
-	muteNutshell	   = async f => nutshell
-
-	// ///////////////////////////////
-	// System functions
-	// ///////////////////////////////
-	getModerationQueue  = async f => [ {
-		nutshell: nutshell,
-		report: {
-			reason: 'Things',
-			by: { ...user }
-		}
-	} ]
-	markAbuseModerated  = async f => nutshell
 
 	// ///////////////////////////////
 	// friends
