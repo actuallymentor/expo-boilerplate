@@ -43,24 +43,37 @@ This setup assumes you have 2 firebase projects, one for development and one for
 
 - Install `npm i -g expo-cli`
 - Log into expo with `expo login`
-- Start with `npm run android/ios/web`.
+- Start with `npm run android/ios/web`
 
 To preview app on phone, use the Expo app.
 
+### Firebase security & indexes
+
+While developing, make sure to update these files so that you don't get "missing permissions" or "missing index" errors:
+
+- `firestore.rules`
+- `sturage.rules`
+- `firestore.indexes.json`
+
+After that make sure to run `firebase:deploy:development` to sent the rules to remote.
+
+### Testing
+
 Testing: `npm test` based on Jest.
 
-## To implement
+### To implement
 
 Based on your app you will have to edit:
 
 - `modules/push.js` to implement `savePushToken` based on your needs
 - Make sure to add firebase configs in app config to enable analytics
 
-## While developing
+### Helpers
 
 - `npm run refresh` to kill expo client through adb on Android
-- `npm run stage` to deploy to staging channel
+- `npm run publish:development` to deploy to development channel
 
-## Environment variables
+
+### Environment variables
 
 Environment variables in `.env` file are mandatory. Empty strings are allowed (and disable the service). You may use a separate `.env.production`. There is an overview of variables in the `.env.example` file.
