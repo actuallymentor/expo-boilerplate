@@ -205,7 +205,7 @@ export const Dropdown = withTheme( ( { theme, title='Select', error, label, valu
 			<List.Section style={ { flex: 1 } }>
 
 				<List.Accordion style={ { backgroundColor: value ? theme.colors.background : 'none' } } onPress={ f => setOpen( !open ) } expanded={ open } { ...props } title={ value || title }>
-					{ items.map( item => <List.Item style={ { backgroundColor: item == value ? theme.colors.background : 'none' } } title={ item } onPress={ f => handleChange( item ) } /> ) }
+					{ items.map( item => <List.Item key={ item } style={ { backgroundColor: item == value ? theme.colors.background : 'none' } } title={ item } onPress={ f => handleChange( item ) } /> ) }
 				</List.Accordion>
 
 			</List.Section>
@@ -213,6 +213,41 @@ export const Dropdown = withTheme( ( { theme, title='Select', error, label, valu
 			{ info && <TouchableOpacity onPress={ f => setInfo( !showInfo ) }>
 				<Avatar.Icon style={ { marginLeft: 10, backgroundColor: 'rgba(0,0,0,0)' } } color={ theme.colors.text } size={24} icon='information-outline' />
 			</TouchableOpacity> }
+		</View>
+
+		{ /* Info helper message */ }
+		{ info && ( showInfo || error ) && <PaperHelperText style={ { paddingLeft: 0, paddingVertical: 20 } } type={ error ? 'error' : 'info' }>{ info }</PaperHelperText> }
+
+	</View>
+
+} )
+
+// Radio selector
+export const Radio = withTheme( ( { theme, title='Select', error, label, value, info, items=[], onChange, style, ...props } ) => {
+
+	const [ showInfo, setInfo ] = useState( false )
+
+	return <View style={ { flexDirection: 'column', width: '100%' } }>
+
+		{ /* The toggle */ }
+		<View style={ { flexDirection: 'row', width: '100%', alignItems: 'flex-start', justifyContent: 'flex-start', ...style } }>
+
+			<View style={ { flexDirection: 'column', flex: 1 } }>
+				
+				{ label && <Text style={ { opacity: .7, marginRight: 20 } }>{ label }</Text> }
+
+				{ /* Selectors */ }
+				{ items.map( item => <View key={ item } style={ { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%' } }>
+					<Checkbox onPress={ f => onChange( item ) } checked={ item == value } />
+					<Text style={ { flex: 1 } } onPress={ f => onChange( item ) }>{ item }</Text>
+				</View> ) }
+
+			</View>
+
+			{ info && <TouchableOpacity onPress={ f => setInfo( !showInfo ) }>
+				<Avatar.Icon style={ { marginLeft: 10, backgroundColor: 'rgba(0,0,0,0)' } } color={ theme.colors.text } size={24} icon='information-outline' />
+			</TouchableOpacity> }
+
 		</View>
 
 		{ /* Info helper message */ }
