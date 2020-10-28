@@ -186,6 +186,42 @@ export const Checkbox = ( { checked, children, onPress, style, ...props } ) => <
 	{ children }
 </View>
 
+// Dropdown
+export const Dropdown = withTheme( ( { theme, title='Select', error, label, value, info, items=[], onChange, style, ...props } ) => {
+
+	const [ showInfo, setInfo ] = useState( false )
+	const [ open, setOpen ] = useState( false )
+	const handleChange = input => {
+		onChange( input )
+		setOpen( !open )
+	}
+
+	return <View style={ { flexDirection: 'column', width: '100%' } }>
+
+		{ /* The toggle */ }
+		<View style={ { flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'flex-start', ...style } }>
+			
+			{ /* Dropdown */ }
+			<List.Section style={ { flex: 1 } }>
+
+				<List.Accordion style={ { backgroundColor: value ? theme.colors.background : 'none' } } onPress={ f => setOpen( !open ) } expanded={ open } { ...props } title={ value || title }>
+					{ items.map( item => <List.Item style={ { backgroundColor: item == value ? theme.colors.background : 'none' } } title={ item } onPress={ f => handleChange( item ) } /> ) }
+				</List.Accordion>
+
+			</List.Section>
+
+			{ info && <TouchableOpacity onPress={ f => setInfo( !showInfo ) }>
+				<Avatar.Icon style={ { marginLeft: 10, backgroundColor: 'rgba(0,0,0,0)' } } color={ theme.colors.text } size={24} icon='information-outline' />
+			</TouchableOpacity> }
+		</View>
+
+		{ /* Info helper message */ }
+		{ info && ( showInfo || error ) && <PaperHelperText style={ { paddingLeft: 0, paddingVertical: 20 } } type={ error ? 'error' : 'info' }>{ info }</PaperHelperText> }
+
+	</View>
+
+} )
+
 // ///////////////////////////////
 // Screens
 // ///////////////////////////////
