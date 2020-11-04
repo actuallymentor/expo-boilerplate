@@ -1,7 +1,7 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "nvm": "source ~/.nvm/nvm.sh && nvm use",
+    "nvm": "unset PREFIX && source ~/.nvm/nvm.sh && nvm use",
     "start": "export development=true && npm run nvm && expo start",
     "android": "export development=true && npm run nvm && expo start --android",
     "ios": "export development=true && npm run nvm && expo start --ios",
