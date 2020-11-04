@@ -98,7 +98,7 @@ class Navigation extends Component {
 			${ n }Sincerely,${ n }${ name }
 		`
 
-		return sendEmail( 'features@app.domain', '✨ NFeature request', message )
+		return sendEmail( 'features@app.domain', '✨ Feature request', message )
 
 	}
 
