@@ -20,7 +20,7 @@
     "ncu": "git diff --exit-code > /dev/null && ncu --configFileName .ncurc.js -u && npm run bust && npm run baseline || echo 'ERROR: commit your stuff'",
     "publish": "export $(grep '^[a-zA-Z_]*=.*' .env | xargs) && expo publish && npm run compile:web",
     "bust": "npm cache clean --force && rm -fr $TMPDIR/metro* && watchman watch-del-all && jest --clearCache || echo 'ERROR: run failed busts manually'",
-    "baseline": "npm run nvm && npm run bust && rm -f package-lock.json && rm -rf node_modules && npm i",
+    "baseline": "npm run nvm && npm run bust && rm -f package-lock.json && rm -rf node_modules && npm i --legacy-peer-deps",
     "diagnostics": "expo diagnostics",
     "i": "npm run nvm && expo install"
   },
