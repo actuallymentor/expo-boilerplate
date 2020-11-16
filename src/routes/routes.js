@@ -3,6 +3,7 @@ import { BackHandler } from 'react-native'
 
 // Helpers
 import { log } from '../modules/helpers'
+import { isWeb } from '../modules/apis/platform'
 
 // Redux
 import { connect } from 'react-redux'
@@ -38,6 +39,13 @@ class Routes extends Component {
 	}
 
 	componentDidMount = async () => {
+
+		// Handle purge requests
+		if( isWeb && typeof location != 'undefined' && location.href.includes( 'purge' ) ) {
+			log( 'Purge request detected' )
+			await firebase.logout()
+			location.href = '/'
+		}
 
 		const { history, user } = this.props
 

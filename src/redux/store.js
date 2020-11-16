@@ -22,8 +22,7 @@ const metaReducer = ( state, action ) => {
 		
 		case "RESETAPP":
 			console.log( 'Resetting app storage' )
-			state = undefined
-			// return undefined
+			return reducers( undefined, action )
 		break
 
 	}
@@ -41,11 +40,3 @@ const middleware = process.env.NODE_ENV == 'development' ? applyMiddleware( logg
 // Export store and persistor
 export const store = createStore( persistedReducer, middleware )
 export const persistor = persistStore( store )
-
-// Have a persistor purge query option
-import { Platform } from 'react-native'
-if( Platform.OS == 'web' && location.href.indexOf( 'purge' ) != -1 ) {
-	console.log( 'Purge request detected' )
-	persistor.purge()
-	location.href = '/'
-}
