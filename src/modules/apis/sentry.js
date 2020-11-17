@@ -1,6 +1,6 @@
 import * as ExpoSentry from 'sentry-expo'
 import { isWeb } from './platform'
-import { SENTRY_DSN } from 'react-native-dotenv'
+import { SENTRY_DSN } from '@env'
 
 export const SentryInit = f => {
 	if( SENTRY_DSN ) ExpoSentry.init( {

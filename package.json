@@ -70,7 +70,7 @@
     "jest": "^26.6.3",
     "jest-expo": "^39.0.0",
     "jest-svg-transformer": "^1.0.0",
-    "react-native-dotenv": "0.2.0",
+    "react-native-dotenv": "2.4.2",
     "react-test-renderer": "^17.0.1",
     "redux-logger": "^3.0.6"
   },
