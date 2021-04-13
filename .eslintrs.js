@@ -17,6 +17,8 @@ module.exports = {
 
     // Specific rules, 2: err, 1: warn, 0: off
     rules: {
+
+        "no-case-declarations": 0,
         "prefer-arrow-callback": 2,
         "no-mixed-spaces-and-tabs": 1,
         "no-unused-vars": [ 1, { vars: 'all', args: 'none' } ], // All variables, no function arguments
@@ -29,15 +31,19 @@ module.exports = {
     // What environment to run in
     env:{
         node: true,
-        browser: false,
-        mocha: false,
-        jest: false,
+        browser: true,
+        mocha: true,
+        jest: true,
         es6: true
     },
 
     // What global variables should be assumed to exist
     globals: {
-        context: false
+        context: false,
+        cy: true,
+        // window: true,
+        // location: true,
+        // fetch: true
     },
 
     // Plugins
