@@ -1,4 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, memo } from 'react'
+
+// Data
+import { useSelector, useDispatch } from 'react-redux'
+import { toggleDarkMode } from '../../../redux/actions/settingsActions'
+import { useHistory } from '../../../routes/router'
+import { catcher } from '../../../modules/helpers'
 
 // Visual
 import { TouchableOpacity, View, Animated, SafeAreaView } from 'react-native'
@@ -10,15 +16,15 @@ import { updateIfAvailable } from '../../../modules/apis/updates'
 // ///////////////////////////////
 // Header
 // ///////////////////////////////
-export const Header = ( { style, back, title, subtitle, toggle, pan, drawer, drawerWidth, drawerTranslate, toggleDark, children, links, go } ) => <View style={ { width: '100%' } }>
+export const Header = ( { style, back, title, subtitle, toggle, pan, drawer, drawerWidth, drawerTranslate, children, links } ) => <View style={ { width: '100%' } }>
 	<StatusBar />
 	<Appbar.Header style={ { width: '100%', paddingVertical: 30, ...( !back && { paddingLeft: 20 } ), ...style } } statusBarHeight={ 0 }>
 		{ back && <Appbar.BackAction onPress={ back } /> }
 		<Appbar.Content title={ title } subtitle={ subtitle }/>
 		{ children }
-		<Appbar.Action icon="menu" onPress={ toggle } />
+		<Appbar.Action nativeID='navigation-toggle' icon="menu" onPress={ toggle } />
 	</Appbar.Header>
-	{ drawer && <Menu links={ links } go={ go } toggleDark={ toggleDark } translate={ drawerTranslate } width={ drawerWidth } pan={ pan } toggle={ toggle } /> }
+	{ drawer && <Menu links={ links } translate={ drawerTranslate } width={ drawerWidth } pan={ pan } toggle={ toggle } /> }
 </View>
 
 // ///////////////////////////////
@@ -55,14 +61,18 @@ const Backdrop = ( { children, width, toggle, pan, ...props } ) => <Portal style
 // ///////////////////////////////
 //  Menu
 // ///////////////////////////////
-export const Menu = withTheme( ( { width, links, go, theme, toggle, pan, translate, toggleDark, ...props } ) => {
+export const Menu = ( { width, links, toggle, pan, translate, ...props } ) => {
+
+	const theme = useSelector( store => store?.settings?.theme || {} )
+	const dispatch = useDispatch()
+	const history = useHistory()
 
 	const [ updatesAvailable, setUpdatesAvailable ] = useState( false )
 	const [ checkingUpdates, setCheckingUpdates ] = useState( false )
 	const [ checkedAt, setCheckedAt ] = useState( undefined )
 	const check = async f => {
 		setCheckingUpdates( true )
-		const available = await updateIfAvailable()
+		const available = await updateIfAvailable().catch( catcher )
 		setUpdatesAvailable( available )
 		setCheckingUpdates( false )
 		setCheckedAt( `${new Date().getHours()}:${new Date().getMinutes()}` )
@@ -72,30 +82,30 @@ export const Menu = withTheme( ( { width, links, go, theme, toggle, pan, transla
 		<Animated.View style={ [ translate, { flex: 1 } ] }>
 
 			{ /* Visual surface element */ }
-			<Surface style={ { flex: 1, elevation: 5 } }>
-				<SafeAreaView style={ { flex: 1, backgroundColor: theme.colors.surface } }>
+			<Surface nativeID='navigation-surface' style={ { flex: 1, elevation: 5 } }>
+				<SafeAreaView style={ { flex: 1, backgroundColor: theme?.colors?.surface } }>
 
 					{ /* Title */ }
 					<View style={ { height: '100%', marginBottom: 0 } }>
 
 						{ /* Elements included from above */ }
 						{ links.map( section => <Drawer.Section style={ { } } key={ section.label } title={ section.label }>
-							{ section.links.map( ( { label, to, onPress } ) => <Drawer.Item key={ label+to } label={ label } onPress={ onPress ? onPress : f => go( to ) } /> ) }
+							{ section.links.map( ( { label, to, onPress } ) => <Drawer.Item key={ label+to } label={ label } onPress={ onPress ? onPress : f => history.push( to ) } /> ) }
 						</Drawer.Section> ) }
 
 
-					    <View style={ { marginTop: 'auto', width: '100%' } }>
-					    	{ /* Version info */ }
-					    	{ checkingUpdates && <Text style={ { opacity: .3, padding: 10, textAlign: 'right' } }>Checking for updates</Text> }
-					    	{ !checkingUpdates && !updatesAvailable && <Text onPress={ check } style={ { opacity: .3, padding: 10, textAlign: 'right' } }>{ version } { updatesAvailable ? '- update available' : '- latest' } { checkedAt && `(checked: ${ checkedAt })` }</Text> }
-					    	{ /* Darkmode toggle */ }
-					    	<DarkMode toggleDark={ toggleDark } theme={ theme } />
-					    </View>
+						<View style={ { marginTop: 'auto', width: '100%' } }>
+							{ /* Version info */ }
+							{ checkingUpdates && <Text style={ { opacity: .3, padding: 10, textAlign: 'right' } }>Checking for updates</Text> }
+							{ !checkingUpdates && !updatesAvailable && <Text onPress={ check } style={ { opacity: .3, padding: 10, textAlign: 'right' } }>{ version } { updatesAvailable ? '- update available' : '- latest' } { checkedAt && `(checked: ${ checkedAt })` }</Text> }
+							{ /* Darkmode toggle */ }
+							<DarkMode toggleDark={ f => dispatch( toggleDarkMode() ) } theme={ theme } />
+						</View>
 
-				    </View>
-			    </SafeAreaView>
+					</View>
+				</SafeAreaView>
 			</Surface>
 
 		</Animated.View>
 	</Backdrop>
-} )
+}

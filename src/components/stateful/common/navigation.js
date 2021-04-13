@@ -1,13 +1,21 @@
 import React from 'react'
-import { Animated, Platform } from 'react-native'
-import { Component } from '../../stateless/common/generic'
+import { Animated } from 'react-native'
+
+// Visual
+import { Component, Appbar } from '../../stateless/common/generic'
 import { Header, Menu } from '../../stateless/common/navigation'
+import { Share } from 'react-native'
+
+// Data & routing
 import { connect } from 'react-redux'
 import { withRouter } from '../../../routes/router'
-import { toggleDarkMode } from '../../../redux/actions/settingsActions'
-import { capitalize, log, sendEmail, Dialogue } from '../../../modules/helpers'
-import { isWeb, isIos, isAndroid, version, OS } from '../../../modules/apis/platform'
 import app from '../../../modules/firebase/app'
+
+// Helpers
+import { capitalize, log, Dialogue } from '../../../modules/helpers'
+import { sendEmail } from '../../../modules/apis/messaging'
+import { version, OS } from '../../../modules/apis/platform'
+
 
 class Navigation extends Component {
 
@@ -34,10 +42,10 @@ class Navigation extends Component {
 	}
 
 	// The animated .event function returns a function
-	pan = new Animated.ValueXY( { x: this.state.drawerWidth, y: 0 }, { useNativeDriver: false } )
+	pan = new Animated.ValueXY( { x: this.state.drawerWidth, y: 0 } )
 	handleDrag = Animated.event(
 		[ { translationX: this.pan.x } ],
-		// { useNativeDriver: Platform.OS != 'web' },
+		// Do not enable native driver, the PanGestureHandler can't handle native
 		{ useNativeDriver: false }
 	)
 
@@ -57,8 +65,6 @@ class Navigation extends Component {
 		else return this.toggleDrawer( 'force' )
 
 	}
-
-	toggleDarkMode = f => this.props.dispatch( toggleDarkMode() )
 
 	mailBugreport = async f => {
 
@@ -102,11 +108,15 @@ class Navigation extends Component {
 
 	}
 
+	inviteFriend = f => Share.share( {
+		message: `I found an app I think you might like!\n\nI\n\nYou can find it here: https://`,
+		url: `https://`
+	} )
+
 	render( ) {
 
 		const { title, user, history } = this.props
 		const { drawer, drawerWidth, drawerOffset } = this.state
-
 		const links = [ ]
 
 		// Add links relevant to the user
@@ -123,6 +133,7 @@ class Navigation extends Component {
 		if( user ) links.push( {
 			label: 'Help & support',
 			links: [
+				{ label: '🎉 Invite a friend', onPress: this.inviteFriend },
 				{ label: 'Report a problem', onPress: this.mailBugreport },
 				{ label: 'Request a feature', onPress: this.mailFeaturerequest },
 			]
@@ -136,14 +147,15 @@ class Navigation extends Component {
 			toggle={ this.toggleDrawer } 
 			title={ capitalize( title ) }
 			drawer={ drawer }
-			toggleDark={ this.toggleDarkMode }
-			go={ to => history.push( to ) }
-			links={ links }
-		/>
+			links={ links } >
+				{ user && <Appbar.Action nativeID='navigation-home' icon='home' onPress={ f => history.push( `/` ) } /> }
+				{ user && <Appbar.Action nativeID='navigation-findfriends' icon='account-plus' onPress={ f => history.push( `/friends/find` ) } /> }
+				{ user && <Appbar.Action nativeID='navigation-writenutshel' icon='pencil-outline' onPress={ f => history.push( `/nutshells/write` ) } /> }
+		</Header>
 	}
 
 }
 
 export default withRouter( connect( store => ( {
-	user: !!store.user
+	user: store.user
 } ) )( Navigation ) )
