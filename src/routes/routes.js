@@ -3,7 +3,7 @@ import { BackHandler } from 'react-native'
 
 // Helpers
 import { log } from '../modules/helpers'
-import { isWeb } from '../modules/apis/platform'
+import { isWeb, dev } from '../modules/apis/platform'
 
 // Redux
 import { connect } from 'react-redux'

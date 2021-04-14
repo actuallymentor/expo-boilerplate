@@ -136,9 +136,11 @@ export const resetPassword = ( auth, email ) => auth.sendPasswordResetEmail( ema
 
 // Logout
 export const logoutUser = async app => {
+
 	const { auth, listeners } = app
 	unregisterListeners( listeners )
 	await auth.signOut()
+	await resetApp()
 }
 
 // Delete
@@ -147,6 +149,7 @@ export const deleteUser = async ( app, password ) => {
 	const { auth, db, FieldValue } = app
 	const { currentUser } = auth
 	const { EmailAuthProvider } = app.Auth
+	if( !currentUser ) return
 
 	try {
 

@@ -3,6 +3,8 @@ import { dev, isWeb, isCI } from './apis/platform'
 import { v4 as uuidv4 } from 'uuid'
 import * as Random from 'expo-random'
 import * as Linking from 'expo-linking'
+import { Sentry } from './apis/sentry'
+
 
 // ///////////////////////////////
 // Visual
@@ -39,14 +41,20 @@ export const log = ( ...content ) => {
 export const error = ( ...content ) => {
 	if( dev ) {
 		console.log( ...content )
+		console.log( 'Stack trace:' )
 		console.trace()
 	}
 }
 
-export const catcher = e => {
-	error( e )
+export const catcher = ( ...errors ) => {
+	error( ...errors )
 	// throw to sentry
-	throw e
+	if( Sentry?.captureException ) Sentry.captureException( errors )
+	// if it can't be done gracefully, do it bloody
+	else {
+		log( 'Sentry not available gracefully' )
+		throw errors
+	}
 }
 
 export const ignoreErrors = arr => LogBox && LogBox.ignoreLogs( arr )
