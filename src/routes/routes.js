@@ -18,13 +18,13 @@ import firebase from '../modules/firebase/app'
 import { updateIfAvailable } from '../modules/apis/updates'
 
 // Components
-import { Component, Loading } from '../components/stateless/common/generic'
+import { Loading } from '../components/common/generic'
 
 // Routing
 import { Switch, Route, withRouter } from './router'
 
 // Components
-import LoginRegistration from '../components/stateful/onboarding/login-register'
+import LoginRegistration from '../components/onboarding/login-register'
 import UserSettings from '../components/stateful/account/user-settings'
 
 
@@ -32,7 +32,7 @@ import UserSettings from '../components/stateful/account/user-settings'
 import FourOhFour from '../components/stateless/common/404'
 
 // Route maneger class
-class Routes extends Component {
+class Routes extends React.Component {
 
 	state = {
 		init: false
@@ -137,7 +137,7 @@ class Routes extends Component {
 		// If logged in but at slash => go to profile
 		if( !noRedir && pathname == '/' && user ) {
 			log( 'Redirect: ', `pathname == '/' && user` )
-			history.push( '/nutshells/read' )
+			history.push( '/home' )
 
 			// Signal that a redirect happened
 			return true
@@ -180,10 +180,10 @@ class Routes extends Component {
 				<Route path='/user/settings' component={ UserSettings } />
 
 				{ /* Home */ }
-				<Route path='/' component={ LoginRegistration } />
+				<Route path='/404' component={ FourOhFour } />
 
 				{ /* Home */ }
-				<Route path='/404' component={ FourOhFour } />
+				<Route path='/' component={ LoginRegistration } />
 
 			</Switch> }
 		</PaperProvider>
