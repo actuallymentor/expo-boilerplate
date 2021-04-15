@@ -56,7 +56,7 @@ class Firebase {
 	registerUser  = ( name, email, pass ) => registerUser( this, name, email, pass )
 	loginUser     = ( email, pass ) => loginUser( this.auth, email, pass )
 	updateUser	  = userUpdates => updateUser( this, userUpdates )
-	logout		  = f => logoutUser( this )
+	logout		  = f => logoutUser( this, dispatch )
 	deleteUser	  = password => deleteUser( this, password )
 	resetPassword = email => resetPassword( this.auth, email )
 
