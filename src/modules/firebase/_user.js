@@ -42,7 +42,7 @@ export const listenUserLogin = ( app, dispatch, action, listeners ) => new Promi
 } ) 
 
 // Listen to user changes
-export const listenUserChanges = ( app, dispatch, action ) => app.db.collection( 'users' ).doc( app.auth.currentUser.uid ).onSnapshot( doc => {
+export const listenUserChanges = ( app, dispatch, action ) => app.auth?.currentUser?.uid && app.db.collection( 'users' ).doc( app.auth?.currentUser?.uid ).onSnapshot( doc => {
 
 	return dispatch( action( {
 		email: app.auth.currentUser.email,
@@ -77,6 +77,8 @@ export const loginUser = async ( auth, email, password ) => auth.signInWithEmail
 
 // Update the user profile and return the new user object to store
 export const updateUser = async ( app, userUpdates ) => {
+
+	log( 'Updating user with ', userUpdates )
 
 	let { uid, email, newpassword, currentpassword, newavatar, oldavatar, ...updates } = userUpdates
 	const { currentUser } = app.auth
@@ -160,7 +162,7 @@ export const deleteUser = async ( app, password ) => {
 			db.collection( 'users' ).doc( currentUser.uid ).delete(),
 			db.collection( 'userMeta' ).doc( currentUser.uid ).delete(),
 			db.collection( 'specialPowers' ).doc( currentUser.uid ).delete(),
-		] )
+		] ).catch( e => log( 'Error deleting meta that may not exist', e ) )
 
 		await auth.currentUser.delete()
 

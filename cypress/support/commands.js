@@ -37,16 +37,12 @@ Cypress.Commands.add( 'register', user => {
 
 	// Input the relevant data
 	fill( 'input#loginreg-name', user.name )
-	fill( 'input#loginreg-username', user.handle )
 	fill( 'input#loginreg-email', user.email )
 	fill( 'input#loginreg-password', user.password )
-	click( '#loginreg-toc', 'accept' )
+	click( '#loginreg-tos', 'accept' )
 
 	// Trigger registration
 	click( '#loginreg-submit', 'register' )
-
-	// Wait for syncing to start and to stop
-	cy.awaitinbox()
 
 } )
 
@@ -58,9 +54,8 @@ Cypress.Commands.add( 'login', ( user, shouldsucceed=true ) => {
 
 	// Trigger registration
 	click( '#loginreg-submit', 'login' )
-
-	// Wait for syncing to start and to stop
-	if( shouldsucceed ) cy.awaitinbox()
+	exclude( '#loginreg-submit', 'logging in' )
+	wait( 2000 )
 
 } )
 
@@ -98,6 +93,5 @@ Cypress.Commands.add( 'openMyProfile', user => {
 Cypress.Commands.add( 'goHome', user => {
 
 	click( '#navigation-home' )
-	cy.awaitinbox()
 
 } )

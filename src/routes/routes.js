@@ -25,11 +25,11 @@ import { Switch, Route, withRouter } from './router'
 
 // Components
 import LoginRegistration from '../components/onboarding/login-register'
-import UserSettings from '../components/stateful/account/user-settings'
+import UserSettings from '../components/account/user-settings'
 
 
 // System
-import FourOhFour from '../components/stateless/common/404'
+import FourOhFour from '../components/common/404'
 
 // Route maneger class
 class Routes extends React.Component {
@@ -177,13 +177,16 @@ class Routes extends React.Component {
 			{ init && <Switch>
 
 				{ /* Account specific */ }
-				<Route path='/user/settings' component={ UserSettings } />
+				<Route exact path='/user/settings' component={ UserSettings } />
 
 				{ /* Home */ }
-				<Route path='/404' component={ FourOhFour } />
+				<Route exact path='/404' component={ FourOhFour } />
 
 				{ /* Home */ }
-				<Route path='/' component={ LoginRegistration } />
+				<Route exact path='/' component={ LoginRegistration } />
+
+				{ /* Default catcher */ }
+				<Route component={ FourOhFour } />
 
 			</Switch> }
 		</PaperProvider>

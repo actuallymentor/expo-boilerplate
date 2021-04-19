@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { View } from 'react-native'
-import { Container, Main, Card, Input, Button, Divider, Text, Checkbox, Link } from '../common/generic'
+import { Container, View, Main, Card, Input, Button, Divider, Text, Checkbox, Link } from '../common/generic'
 import Navigation from '../common/navigation'
 
 // Functionality
@@ -30,12 +29,12 @@ export default function LoginRegistration( ) {
 	// ///////////////////////////////
 	// Component functions
 	// ///////////////////////////////
-	function validate( { email, password, name, toc } ) {
+	function validate( { email, password, name, tos } ) {
 
 		if( !email ) return 'Please fill in your email address'
 		if( action != 'recover' && !password ) return 'Please fill in your password'
 		if( action == 'register' && !name ) return 'Please fill in your name'
-		if( action == 'register' && !toc ) return 'Please accept the terms and conditions'
+		if( action == 'register' && !tos ) return 'Please accept the terms and conditions'
 		return false
 	}
 
@@ -44,7 +43,7 @@ export default function LoginRegistration( ) {
 		// Validate input
 		const missing = validate( input )
 		if( missing ) return alert( missing )
-		const { name, email, password, toc } = input
+		const { name, email, password, tos } = input
 
 		try {
 
@@ -89,8 +88,8 @@ export default function LoginRegistration( ) {
 				<Input nativeID='loginreg-email' autoCompleteType='email' autoCapitalize='none' onSubmit={ onSubmit } value={ input.email } onChangeText={ t => onInput( 'email', t ) } label='email' keyboardType='email-address'/>
 				{ action != 'recover' && <Input autoCompleteType='password' nativeID='loginreg-password' autoCapitalize='none' onSubmit={ onSubmit } value={ input.password } onChangeText={ t => onInput( 'password', t ) } secureTextEntry={ true } label='password' /> }
 
-				{ action == 'register' && <Checkbox nativeID='loginreg-toc' onPress={ f => onInput( 'tos', !input.tos ) } checked={ input.tos } style={ { marginTop: 10 } }>
-					<Text onPress={ f => onInput( 'tos', !tos ) }>I accept the </Text>
+				{ action == 'register' && <Checkbox nativeID='loginreg-tos' onPress={ f => onInput( 'tos', !input.tos ) } checked={ input.tos } style={ { marginTop: 10 } }>
+					<Text onPress={ f => onInput( 'tos', !input.tos ) }>I accept the </Text>
 					<Link to='https://'>terms of service.</Link>
 				</Checkbox> }
 				

@@ -28,4 +28,4 @@ export const listenSettings = ( app, dispatch, action ) => {
 
 }
 
-export const updateSettings = ( app, settings ) => app.db.collection( 'settings' ).doc( app.auth.currentUser.uid ).set( settings, { merge: true } )
+export const updateSettings = ( app, settings ) => app.auth?.currentUser?.uid && app.db.collection( 'settings' ).doc( app.auth.currentUser.uid ).set( settings, { merge: true } )
