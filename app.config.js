@@ -1,9 +1,12 @@
 // ///////////////////////////////
 // Application config
 // ///////////////////////////////
-// The google json/plist are for fireebase native configs
-require('dotenv').config()
 
+// ///////////////////////////////
+// Firebase configs
+require('dotenv').config( {
+  path: process.env.development ? '.env' : '.env.production'
+} )
 
 // Firebase config
 const { FIREBASE_apiKey, FIREBASE_authDomain, FIREBASE_databaseURL, FIREBASE_projectId, FIREBASE_storageBucket, FIREBASE_messagingSenderId, FIREBASE_appId, FIREBASE_measurementId } = process.env
@@ -17,6 +20,13 @@ const firebaseConfig = {
   appId: FIREBASE_appId,
   measurementId: FIREBASE_measurementId
 }
+
+// ///////////////////////////////
+// Expo configs
+// ///////////////////////////////
+
+// Verbose printing
+console.log( 'Process.env.development: ', !!process.env.development, ' firebase project: ', firebaseConfig.projectId )
 
 // Vars
 const conf = {

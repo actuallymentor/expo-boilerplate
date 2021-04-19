@@ -3,7 +3,7 @@ import { BackHandler } from 'react-native'
 
 // Helpers
 import { log } from '../modules/helpers'
-import { isWeb } from '../modules/apis/platform'
+import { isWeb, dev } from '../modules/apis/platform'
 
 // Redux
 import { connect } from 'react-redux'
@@ -18,21 +18,21 @@ import firebase from '../modules/firebase/app'
 import { updateIfAvailable } from '../modules/apis/updates'
 
 // Components
-import { Component, Loading } from '../components/stateless/common/generic'
+import { Loading } from '../components/common/generic'
 
 // Routing
 import { Switch, Route, withRouter } from './router'
 
 // Components
-import LoginRegistration from '../components/stateful/onboarding/login-register'
-import UserSettings from '../components/stateful/account/user-settings'
+import LoginRegistration from '../components/onboarding/login-register'
+import UserSettings from '../components/account/user-settings'
 
 
 // System
-import FourOhFour from '../components/stateless/common/404'
+import FourOhFour from '../components/common/404'
 
 // Route maneger class
-class Routes extends Component {
+class Routes extends React.Component {
 
 	state = {
 		init: false
@@ -40,21 +40,10 @@ class Routes extends Component {
 
 	componentDidMount = async () => {
 
-		// Handle purge requests
-		if( isWeb && typeof location != 'undefined' && location.href.includes( 'purge' ) ) {
-			log( 'Purge request detected' )
-			await firebase.logout()
-			location.href = '/'
-		}
+		// Handle query strings
+		this.handleQueryAndParams()
 
 		const { history, user } = this.props
-
-		// If url is wrongly using hash (for example due to a direct link), fix it
-		if( window?.location ) {
-			const { href, host } = window.location
-			const [ fullMatch, pathMatch ] = href.match( /(\w+)#/ ) || []
-			if( pathMatch ) window.history.replaceState( null, '', `/#/${pathMatch}` )
-		}
 
 		// Register back button handler
 		this.backHandler = BackHandler.addEventListener( 'hardwareBackPress', f => {
@@ -77,28 +66,86 @@ class Routes extends Component {
 		return this.setState( { init: true } )
 	}
 
-	shouldComponentUpdate = ( nextProps, nextState ) => {
+	handleQueryAndParams = async f => {
+
+		// If url is wrongly using hash (for example due to a direct link), fix it
+		if( window?.location ) {
+			const { href, host } = window.location
+			const [ fullMatch, pathMatch ] = href.match( /(\w+)#/ ) || []
+			if( pathMatch ) window.history.replaceState( null, '', `/#/${pathMatch}` )
+		}
+
+		// Handle purge requests
+		if( isWeb && typeof location != 'undefined' && location.href.includes( 'purge' ) ) {
+			log( 'Purge request detected' )
+			await firebase.logout()
+			location.href = '/'
+		}
+
+		
+
+	}
+
+	shouldComponentUpdate = async ( nextProps, nextState ) => {
 
 		const { history, user } = nextProps
 		const { pathname } = history.location
+		
+		// Redirect rules, if redirected, do not rerender router
+		const wasRedirected = this.handleRedirects( pathname, user )
+
+		// If redirect was triggered, do not rerender as history will trigger it
+		if( wasRedirected ) return false
+
+		// Always update by default
+		return true
+
+	}
+
+	componentDidUpdate = f => {
+
+		const { history } = this.props
+		const { pathname } = history.location
+
+
+		// Development-only logging of path
+		log( 'Current path: ', pathname )
 
 		// Update trigger
 		this.scheduleUpdateCheck()
 
-		// ///////////////////////////////
-		// Redirect rules
-		// ///////////////////////////////
+		// Log user screen
+		if( pathname && !dev ) firebase.analyticsSetScreen( pathname )
+
+
+	}
+
+	handleRedirects = ( pathname, user ) => {
+
+		const { history } = this.props
+
+		const noRedir = isWeb && typeof location != 'undefined' && location.href.includes( 'noredir' )
 
 		// Not logged in but not on the home page => go to home
-		if( pathname != '/' && !user ) history.push( '/' )
-		// If logged in but at home => go to profile
-		if( pathname == '/' && user ) history.push( '/user/settings' )
+		if( !noRedir && pathname != '/' && !user ) {
+			log( 'Redirect: ', `pathname != '/' && !user` )
+			history.push( '/' )
 
-		// analytics
-		if( pathname ) firebase.analytics.setCurrentScreen( pathname ).catch( f => f )
+			// Signal that a redirect happened
+			return true
+		}
+		// If logged in but at slash => go to profile
+		if( !noRedir && pathname == '/' && user ) {
+			log( 'Redirect: ', `pathname == '/' && user` )
+			history.push( '/home' )
 
-		// On prop or state chang, always update
-		return true
+			// Signal that a redirect happened
+			return true
+
+		}
+
+		// Signal that no redirect happened
+		return false
 
 	}
 
@@ -130,13 +177,16 @@ class Routes extends Component {
 			{ init && <Switch>
 
 				{ /* Account specific */ }
-				<Route path='/user/settings' component={ UserSettings } />
+				<Route exact path='/user/settings' component={ UserSettings } />
 
 				{ /* Home */ }
-				<Route path='/' component={ LoginRegistration } />
+				<Route exact path='/404' component={ FourOhFour } />
 
 				{ /* Home */ }
-				<Route path='/404' component={ FourOhFour } />
+				<Route exact path='/' component={ LoginRegistration } />
+
+				{ /* Default catcher */ }
+				<Route component={ FourOhFour } />
 
 			</Switch> }
 		</PaperProvider>

@@ -7,6 +7,7 @@ import 'firebase/functions'
 
 // Helpers
 import { dev, isWeb } from '../apis/platform'
+import { log } from '../helpers'
 
 // Analytics
 import * as Analytics from 'expo-firebase-analytics'
@@ -55,7 +56,7 @@ class Firebase {
 	registerUser  = ( name, email, pass ) => registerUser( this, name, email, pass )
 	loginUser     = ( email, pass ) => loginUser( this.auth, email, pass )
 	updateUser	  = userUpdates => updateUser( this, userUpdates )
-	logout		  = f => logoutUser( this )
+	logout		  = f => logoutUser( this, dispatch )
 	deleteUser	  = password => deleteUser( this, password )
 	resetPassword = email => resetPassword( this.auth, email )
 
@@ -80,14 +81,20 @@ class Firebase {
 	// Register user listener in a promise wrapper that resolved when initial auth state is received
 	init = async history => {
 
-		// Keep a reference to the history object
-		if( history ) this.history = history
+		try {
 
-		this.listeners.auth = await listenUserLogin( this, dispatch, setUserAction, [
-			{ name: 'profile', listener: listenUserChanges, action: setUserAction },
-			{ name: 'settings', listener: listenSettings, action: setSettingsAction }
+			// Keep a reference to the history object
+			if( history ) this.history = history
 
-		] )
+			this.listeners.auth = await listenUserLogin( this, dispatch, setUserAction, [
+				{ name: 'profile', listener: listenUserChanges, action: setUserAction },
+				{ name: 'settings', listener: listenSettings, action: setSettingsAction }
+
+			] )
+
+		} catch( e ) {
+			log( 'Firebase init error: ', e )
+		}
 
 	}
 

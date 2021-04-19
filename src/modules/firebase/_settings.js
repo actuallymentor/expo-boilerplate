@@ -1,6 +1,6 @@
 import { dataFromSnap } from './helpers'
 import {catcher } from '../helpers'
-import { getTokenIfNeeded, registerNotificationListeners } from '../push'
+import { getExpoPushTokenIfNeeded, registerNotificationListeners } from '../push'
 
 export const listenSettings = ( app, dispatch, action ) => {
 
@@ -9,7 +9,7 @@ export const listenSettings = ( app, dispatch, action ) => {
 	return db.collection( 'settings' ).doc( auth.currentUser.uid ).onSnapshot( async doc => {
 
 		const settings = dataFromSnap( doc, false )
-		const pushToken = await getTokenIfNeeded( settings )
+		const pushToken = await getExpoPushTokenIfNeeded( settings )
 		
 		// New token? Send to firebase
 		if( pushToken ) await db.collection( 'settings' ).doc( auth.currentUser.uid ).set( {
@@ -28,4 +28,4 @@ export const listenSettings = ( app, dispatch, action ) => {
 
 }
 
-export const updateSettings = ( app, settings ) => app.db.collection( 'settings' ).doc( app.auth.currentUser.uid ).set( settings, { merge: true } )
+export const updateSettings = ( app, settings ) => app.auth?.currentUser?.uid && app.db.collection( 'settings' ).doc( app.auth.currentUser.uid ).set( settings, { merge: true } )
