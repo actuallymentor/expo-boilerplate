@@ -14,7 +14,7 @@ import Routes from './src/routes/routes'
 import { History, Router } from './src/routes/router'
 
 // Visual
-import { Loading } from './src/components/stateless/common/generic'
+import { Loading } from './src/components/common/generic'
 import { setOrientation } from './src/modules/visual/screen'
 import { injectWebCss } from './src/modules/visual/style'
 
