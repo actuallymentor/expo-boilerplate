@@ -26,7 +26,9 @@ This setup assumes you have 2 firebase projects, one for development and one for
     + DOTENV_PRODUCTION
     + DOTENV_DEVELOPMENT
     + GOOGLE_SERVICES_JSON
+    + GOOGLE_SERVICES_JSON_DEVELOPMENT
     + GOOGLE_SERVICES_PLIST
+    + GOOGLE_SERVICES_PLIST_DEVELOPMENT
     + EXPO_USERNAME
     + EXPO_PASSWORD
     + FIREBASE_TOKEN
