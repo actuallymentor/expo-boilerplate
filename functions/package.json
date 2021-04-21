@@ -4,8 +4,8 @@
   "scripts": {
     "nvm": "nodever=$(<.nvmrc) && node -v | grep -q \"v$nodever\" && echo \"Correct node version\" && npm i || exit 1",
     "serve": "export development=true && firebase emulators:start --only functions",
-    "shell": "npm run nvm && export development=true && export GOOGLE_APPLICATION_CREDENTIALS=\"$(pwd)/../nutshell-staging.json\" && firebase functions:shell",
-    "shell:production": "source ~/.nvm/nvm.sh && nvm use && export development=true && export GOOGLE_APPLICATION_CREDENTIALS=\"$(pwd)/../nutshell-production.json\" && firebase functions:shell",
+    "shell": "npm run nvm && export development=true && export GOOGLE_APPLICATION_CREDENTIALS=\"$(pwd)/../service-account-staging.json\" && firebase functions:shell",
+    "shell:production": "source ~/.nvm/nvm.sh && nvm use && export development=true && export GOOGLE_APPLICATION_CREDENTIALS=\"$(pwd)/../service-account-production.json\" && firebase functions:shell",
     "start": "npm run shell",
     "deploy:development": "npm run nvm && npm i && firebase use development && firebase deploy --only functions && say 'Development deployment done'",
     "deploy:production": "npm run nvm && npm i && firebase use production && firebase deploy --only functions && say 'Production deployment done'",
