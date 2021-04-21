@@ -33,7 +33,7 @@ export default function ImagePicker( { image, onSelected, style, size } ) {
 	async function pickImage() {
 		
 		// If on mobile, offer to take a picture
-		if( isWeb ) {
+		if( !isWeb ) {
 			await Dialogue( 'Take picture', 'Do you want to take a picture or pick an existing one?', [ {
 				text: 'Take picture',
 				onPress: f => setSource( 'camera' )
