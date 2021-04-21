@@ -28,23 +28,13 @@ const handleErrorType = content => {
 	return obj
 }
 
-exports.log = ( ...content ) => {
-
-	// Logs are only for development
+exports.log = ( title, content ) => {
 	if( !process.env.development ) return
-
-	// Log out each of the inputs
-	const input = [ ...content ]
-	input.map( item => JSON.stringify( handleErrorType( item ), null, 2 ) )
-
+	console.log( title, content ? JSON.stringify( handleErrorType( content ), null, process.env.development ? 2 : null ) : '' )
 }
 
-exports.error = ( ...content ) => {
-
-	// Log out each of the inputs, indented in dev and as a string in production
-	const input = [ ...content ]
-	input.map( item => JSON.stringify( handleErrorType( item ), null, process.env.development ? 2 : null ) )
-
+exports.error = ( title, content ) => {
+	console.log( title, content ? JSON.stringify( handleErrorType( content ), null, process.env.development ? 2 : null ) : '' )
 }
 
 // ///////////////////////////////
