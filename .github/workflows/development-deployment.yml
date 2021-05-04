@@ -26,18 +26,34 @@ jobs:
       - name: Set right stageing area
         run: git checkout development
 
-      - name: installing node 13
+      # Install functions dependencies based on nvmrc
+      - name: Read .nvmrc
+        run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
+        id: nvmfunctions
+        working-directory: functions
+
+      - name: Set Node.js (.nvmrc)
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: "${{ steps.nvmfunctions.outputs.NVMRC }}"
 
-      - name: Install dependencies
-        run: |
-          npm i
-          cd functions
-          npm i
-          cd ..
+      - name: Install functions dependencies
+        run: npm i
+        working-directory: functions
 
+      # Install frontend dependencies based on nvmrc
+      - name: Read .nvmrc
+        run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
+        id: nvm
+
+      - name: Set Node.js (.nvmrc)
+        uses: actions/setup-node@v1
+        with:
+          node-version: "${{ steps.nvm.outputs.NVMRC }}"
+
+      - name: Install frontend dependencies
+        run: npm i
+ 
       - name: Create environment files
         run: |
           echo -e "${{ secrets.DOTENV_DEVELOPMENT }}" > .env
@@ -61,6 +77,6 @@ jobs:
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --force --project=staging
+          args: deploy --force --project=development
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
