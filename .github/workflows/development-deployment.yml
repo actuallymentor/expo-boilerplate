@@ -72,7 +72,7 @@ jobs:
 
 
       - name: Publish
-        run: npm run stage
+        run: npm run deploy:development
 
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
