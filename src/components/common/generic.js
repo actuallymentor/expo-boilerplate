@@ -46,7 +46,7 @@ export const Card = ( { containerStyle, style, children, ...props } ) => <View s
 </View>
 
 // Modified view with sensible defaults
-export const View = ( { style, ...props } ) => <NativeView style={ { maxWidth: '100%', ...style } } { ...props } />
+export const View = ( { style, ...props } ) => <NativeView style={ { maxWidth: '100%', flexWrap: 'wrap', ...style } } { ...props } />
 
 // Divider
 export const Divider = ( { style, ...props } ) => <PaperDivider style={ { marginVertical: 20, ...style } } { ...props } />
