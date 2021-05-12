@@ -19,5 +19,5 @@ web-report/
 # Secrets
 *.jks
 .*
-./*.json
-./*.plist
+*.json
+*.plist
