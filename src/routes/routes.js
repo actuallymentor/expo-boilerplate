@@ -40,9 +40,6 @@ class Routes extends React.Component {
 
 	componentDidMount = async () => {
 
-		// Handle query strings
-		this.handleQueryAndParams()
-
 		const { history, user } = this.props
 
 		// Register back button handler
@@ -58,6 +55,9 @@ class Routes extends React.Component {
 
 		// Set the state to initialised if a user is already in stor
 		this.setState( { init: !!user } )
+
+		// Handle query strings
+		await this.handleQueryAndParams()
 
 		// Init firebase
 		await firebase.init( history )
@@ -113,6 +113,9 @@ class Routes extends React.Component {
 
 		// Update trigger
 		this.scheduleUpdateCheck()
+
+		// Handle query strings
+		this.handleQueryAndParams()
 
 		// Log user screen
 		if( pathname && !dev ) firebase.analyticsSetScreen( pathname )
